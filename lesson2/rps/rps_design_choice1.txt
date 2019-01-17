@@ -1,0 +1,5 @@
+- Human and Computer subclasses are slightly better than the original design
+  - removes if-then-else logic from the set_name and choose methods ...
+  - ... but moves the bulk of that logic to the new subclasses
+- primary improvement is simplification of the Player initialize method
+- primary drawback is addition of two new subclasses

@@ -1,0 +1,6 @@
+The method lookup path is the list of classes and modules that R. uses to
+search for a method, listed in the order of searching.
+
+R. searches for a called method within the listed items, until it locates
+(and then invokes) a method of the same name; failing that, it rtns a
+NoMethodError.

@@ -1,0 +1,2 @@
+primary improvement of the new design is the simplification of logic in the display_winner method
+primary drawback is the addition of another class (Move) and its associated methods
