@@ -22,11 +22,28 @@
 # - '>' method simplified; rock?, paper?, scissors? methods discarded
 
 # bonus3
-# add a Rock (etc) class
+# Add a Rock (etc) class.
 # Noun: rock; Verbs: ?
 # Adds alot of extra classes, w/ little improvement in the code.
 # There would only ever be one instance of each class.
 # Each class must be def'd w/ a commonly-named (@value) instance var.
+
+# bonus4
+# Add a Stats class.
+# Move history items are stored as a fifo arr of hshs.
+# History items are displayed in a table at the end of a match.
+
+# bonus5
+# Winning moves in the move history are added to an arr from which the next
+# move is chosen. This effectively biases the next move towards (recent) prior
+# winning moves.
+
+# bonus6
+# Personality is unique to each Computer; generally, it only needs to be
+# set once (when the Computer obj is instantiated). However, personalities
+# that depend on move history need to be updated dynamically.
+# Personality can be represented by an arr of potential moves, from which
+# the Computer's move is chosen.
 
 # begin bonus3
 class Rock
@@ -67,7 +84,7 @@ end
 # end bonus3
 
 class Move
-# begin bonus2
+  # begin bonus2
   # VALUES = ['rock', 'paper', 'scissors']
   # VALUES = {
   #   'rock'     => ['scissors', 'lizard'],
@@ -96,7 +113,7 @@ class Move
   # def scissors?
   #   @value == 'scissors'
   # end
-# end bonus2
+  # end bonus2
 
   def initialize(value)
     @value = value
@@ -123,6 +140,9 @@ class Move
 end
 
 class Player
+  MOVES = Move::VALUES.keys # bonus6
+  # ['rock', 'paper', 'scissors', 'lizard', 'Spock']
+
   attr_accessor :move, :name
   attr_accessor :score # bonus1
 
@@ -152,10 +172,12 @@ class Human < Player
     choice = nil
     loop do
       # puts 'Please choose rock, paper, or scissors:'
-      puts "Please choose one of: #{Move::VALUES.keys.join(', ')}" # bonus2
+      # puts "Please choose one of: #{Move::VALUES.keys.join(', ')}." # bonus2
+      puts "Please choose one of: #{MOVES.join(', ')}." # bonus6
       choice = gets.chomp
       # break if Move::VALUES.include?(choice)
-      break if Move::VALUES.include?(choice)
+      # break if Move::VALUES.keys.include?(choice) # bonus2
+      break if MOVES.include?(choice) # bonus6
       puts 'Sorry, invalid choice, try again.'
     end
     self.move = Move.new(choice)
@@ -163,18 +185,42 @@ class Human < Player
 end
 
 class Computer < Player
-  COMPUTERS = %w(Hal9000 R2D2 Chappie) # bonus0
+  COMPUTERS = %w(Hal9000 R2D2 Chappie DeepThought) # bonus0
 
-  # bonus5
-  attr_reader :stats
-  def initialize(stats)
+  attr_reader :stats # bonus5
+  attr_accessor :personality # bonus6
+
+  def initialize(stats) # bonus5
     @stats = stats
     super()
+
+    @personality = set_personality # bonus6
+    # Alternatively, could change
+    #   attr_accessor :personality
+    # to
+    #   attr_reader :personality
+    # and def a 'personality=' setter method (which calls the
+    # 'set_personality' method from the 'choose' method)
   end
 
   def set_name
-    # self.name = ['Hal9000', 'R2D2', 'Chappie'].sample
+    # self.name = ['Hal9000', 'R2D2', 'Chappie', 'DeepThought'].sample
     self.name = COMPUTERS.sample # bonus0
+  end
+
+  # bonus6
+  # set_personality method
+  # - rtn an arr from which the given computer's move is chosen
+  # - duplicate elements indicate a higher probability of choosing that elem
+  def set_personality
+    case name
+    when 'Hal9000'
+      ['rock'] + ['scissors'] * 10 + ['lizard'] * 3 + ['Spock'] * 3
+    when 'R2D2'
+      ['rock']
+    else
+      MOVES
+    end
   end
 
   def choose
@@ -182,9 +228,18 @@ class Computer < Player
     # self.move = Move.new(Move::VALUES.keys.sample) # bonus2
 
     # bonus5
-    sample_arr = Move::VALUES.keys + stats.bias(stats.history)
-    puts "#{name} sampled #{sample_arr}"
-    self.move = Move.new(sample_arr.sample)
+    # sample_arr = Move::VALUES.keys + stats.bias
+    # puts "#{name} sampled #{sample_arr}"
+    # self.move = Move.new(sample_arr.sample)
+
+    # bonus6
+    # Note: bias will not include old items that have rolled off of the (fifo)
+    # history
+    if name == 'Chappie' # list computers here that have a move history bias
+      self.personality = MOVES + stats.bias # bonus5
+    end
+    puts "#{name} sampled #{personality}."
+    self.move = Move.new(personality.sample)
   end
 end
 
@@ -223,41 +278,54 @@ class Stats # bonus4
   # - if the arr.size > MAX_HISTORY
   #   - delete the 1st arr elem
   def build_history(human_move, computer_move) # bonus4
-    winner = if human_move > computer_move
-      'human'
-    elsif computer_move > human_move
-      'computer'
-    else
-      'tie'
-    end
+    winner =  if human_move > computer_move
+                'human'
+              elsif computer_move > human_move
+                'computer'
+              else
+                'tie'
+              end
     hsh = {
       'h' => human_move.value,
       'c' => computer_move.value,
       'w' => winner
     }
-    self.history << hsh
-    self.history.shift if history.size > MAX_HISTORY
+    # self.history << hsh # isn't history a setter method here ? ***
+    # self.history.shift if history.size > MAX_HISTORY # and here ? ***
+    history << hsh
+    history.shift if history.size > MAX_HISTORY
     # p history.size
     # p history
   end
 
+  # display_history method
+  # - build and output a table of recent moves # bonus4
   def display_history(human_name, computer_name)
     line = '-' * 51
     puts line
-    puts format("|  # | %12s | %12s |    winner    |", human_name.center(12),
-      computer_name.center(12))
+    puts format("|  # | %12s | %12s |    winner    |",
+                human_name[0, 12].center(12), computer_name[0, 12].center(12))
     puts line
     history.each_with_index do |elem, ndx|
       puts format("| %2d | %12s | %12s | %12s |", ndx + 1, elem['h'].center(12),
-        elem['c'].center(12), elem['w'].center(12))
+                  elem['c'].center(12), elem['w'].center(12))
     end
     puts line
   end
 
   # bias method; see file bias.rb # bonus5
-  def bias(arr)
-    counter_hsh = {'rock'=>0, 'paper'=>0, 'scissors'=>0, 'lizard'=>0, 'Spock'=>0}
-    arr.each { |elem| counter_hsh[elem['c']] += 1 if elem['w'] == 'computer' }
+  def bias
+    # counter_hsh = {
+    #   'rock' => 0,
+    #   'paper' => 0,
+    #   'scissors' => 0,
+    #   'lizard' => 0,
+    #   'Spock' => 0
+    # }
+    counter_hsh = Move::VALUES.transform_values { 0 }
+    history.each do |elem|
+      counter_hsh[elem['c']] += 1 if elem['w'] == 'computer'
+    end
     counter_hsh.map { |k, v| Array.new(v) { k } }.flatten
   end
 end
@@ -271,7 +339,8 @@ class RPSGame
   def initialize
     @stats = Stats.new # bonus4
     @human = Human.new
-    @computer = Computer.new(stats)
+    # @computer = Computer.new
+    @computer = Computer.new(stats) # bonus5
   end
 
   def display_welcome_message
@@ -291,7 +360,7 @@ class RPSGame
 
   # display_history method
   # - build and output a table of recent moves # bonus4
-  # how to move this to the Stats class ?
+  # How to move this to the Stats class ?
   # - need access to the human and computer objs w/i Stats
   #   - could take human, computer objs as args in Stats#initialize
   #   - could instantiate Stats class w/i Computer ?
@@ -304,8 +373,8 @@ class RPSGame
   #     computer.name.center(12))
   #   puts line
   #   stats.history.each_with_index do |elem, ndx|
-  #     puts format("| %2d | %12s | %12s | %12s |", ndx + 1, elem['h'].center(12),
-  #       elem['c'].center(12), elem['w'].center(12))
+  #     puts format("| %2d | %12s | %12s | %12s |", ndx + 1,
+  #       elem['h'].center(12), elem['c'].center(12), elem['w'].center(12))
   #   end
   #   puts line
   # end
@@ -320,10 +389,10 @@ class RPSGame
     end
   end
 
-# begin bonus1
+  # begin bonus1
   def count_score
     if human.move > computer.move
-      human.score += 5
+      human.score += 5 # +5 is intentional
     elsif computer.move > human.move
       computer.score += 1
     end
@@ -331,7 +400,7 @@ class RPSGame
 
   def display_score
     puts "Your score is #{human.score}; "\
-      "the computer's score is #{computer.score}"
+      "the computer's score is #{computer.score}."
     puts
   end
 
@@ -349,7 +418,7 @@ class RPSGame
     human.score = 0
     computer.score = 0
   end
-# end bonus1
+  # end bonus1
 
   def play_again?
     loop do
