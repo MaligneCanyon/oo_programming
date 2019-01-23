@@ -274,7 +274,7 @@ class Stats # bonus4
   #   - 'h' : str value of the human move
   #   - 'c' : str value of the comuter move
   #   - 'w' : str representing the winner
-  # - store the hsh in the arr
+  # - store the hsh in an arr
   # - if the arr.size > MAX_HISTORY
   #   - delete the 1st arr elem
   def build_history(human_move, computer_move) # bonus4
