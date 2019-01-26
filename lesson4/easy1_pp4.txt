@@ -1,0 +1,2 @@
+- call the .new class method on the class, i.e.
+  AngryCat.new

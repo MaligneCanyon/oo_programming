@@ -1,0 +1,7 @@
+- within an instance method, 'self' refers to the calling obj, in this case small_car
+- self.class rtns the class of the calling obj; in this case small_car is an instance of the Car class, so
+  Car is rtn'd
+- so,
+  puts "I am a #{self.class} and going super fast!"
+  outputs
+  "I am a Car and going super fast!"

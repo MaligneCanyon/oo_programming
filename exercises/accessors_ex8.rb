@@ -12,7 +12,7 @@ class Person
 end
 
 person1 = Person.new('James')
-person1.name.reverse! # person1.name rtns str obj "James", .reverse! then mutates it (?)
+person1.name.reverse! # person1.name rtns str obj "James", String#reverse! then mutates it
 puts person1.name # semaJ
 
 # Expected output:

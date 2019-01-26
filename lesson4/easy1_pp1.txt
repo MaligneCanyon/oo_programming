@@ -1,0 +1,7 @@
+    true
+    "hello"
+    [1, 2, 3, "happy days"]
+    142
+
+- all of the above are objs
+- use obj.class to determine the class of an obj
