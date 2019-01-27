@@ -1,0 +1,23 @@
+with a play method def'd in the Bingo class,
+- the play method in the Bingo class would be called
+- the play method in the Game class would be ignored
+
+
+class Game
+  def play
+    "Start the game!"
+  end
+end
+
+# class Bingo
+class Bingo < Game # allows Bingo to inherit the play method from the Game class
+  def rules_of_play
+    #rules of play
+  end
+
+  def play
+    "beginneth thine game!"
+  end
+end
+
+Bingo.new.play # => "beginneth thine game"

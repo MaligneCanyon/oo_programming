@@ -1,0 +1,9 @@
+class Television
+  def self.manufacturer # class method; call using 'Television.manufacturer'
+    # method logic
+  end
+
+  def model
+    # method logic
+  end
+end

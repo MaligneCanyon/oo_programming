@@ -1,0 +1,17 @@
+- use the ancestors method to find where R. looks for a method (the lookup chain)
+- method lookup chain for Orange and HotSauce classes is
+  self > Taste > Object > Kernal > BasicObject
+
+module Taste
+  def flavor(flavor)
+    puts "#{flavor}"
+  end
+end
+
+class Orange
+  include Taste
+end
+
+class HotSauce
+  include Taste
+end
