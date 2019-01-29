@@ -10,11 +10,15 @@ class Board # reps state of the board
     reset
   end
 
-  def get_square_at(key) # rtns a Square obj
-    @squares[key]
-  end
+  # def get_square_at(key) # rtns a Square obj # improvement 7
+  #   @squares[key]
+  # end
 
-  def set_square_at(key, marker)
+  # improvement 8
+  # def set_square_at(key, marker) # sets the marker attrib of a Square obj
+  #   @squares[key].marker = marker
+  # end
+  def []=(key, marker) # sets the marker attrib of a Square obj
     @squares[key].marker = marker
   end
 
@@ -30,59 +34,59 @@ class Board # reps state of the board
     !!winning_marker
   end
 
-
-  def count_human_marker(squares)
-    squares.map(&:marker).count(TTTGame::HUMAN_MARKER)
-  end
-
-  def count_computer_marker(squares)
-    squares.map(&:marker).count(TTTGame::COMPUTER_MARKER)
-  end
-
-  # def detect_winner # rtn the winning marker or nil
-  def winning_marker # rtn the winning marker or nil # improvement 4
-    WINNING_LINES.each do |line|
-      # binding.pry
-
-      # if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
-      #   @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
-      #   @squares[line[2]].marker == TTTGame::HUMAN_MARKER
-      if count_human_marker(@squares.values_at(*line)) == 3
-        return TTTGame::HUMAN_MARKER
-      # elsif @squares[line[0]].marker == TTTGame::COMPUTER_MARKER &&
-      #   @squares[line[1]].marker == TTTGame::COMPUTER_MARKER &&
-      #   @squares[line[2]].marker == TTTGame::COMPUTER_MARKER
-      elsif count_computer_marker(@squares.values_at(*line)) == 3
-        return TTTGame::COMPUTER_MARKER
-      end
-    end
-    nil
-  end
-
-
-  # def winning_marker_count?(line, mark)
-  #   # @squares.values_at(*line) is an arr of Square objs
-  #   # @squares.values_at(*line).map(&:marker) is an arr of markers
-  #   @squares.values_at(*line).map(&:marker).count(mark) == 3
+  # def count_human_marker(squares)
+  #   squares.map(&:marker).count(TTTGame::HUMAN_MARKER)
   # end
+
+  # def count_computer_marker(squares)
+  #   squares.map(&:marker).count(TTTGame::COMPUTER_MARKER)
+  # end
+
+  # # def detect_winner # rtn the winning marker or nil
   # def winning_marker # rtn the winning marker or nil # improvement 4
   #   WINNING_LINES.each do |line|
-  #     # binding.pry
-
   #     # if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
   #     #   @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
   #     #   @squares[line[2]].marker == TTTGame::HUMAN_MARKER
-  #     if winning_marker_count?(line, TTTGame::HUMAN_MARKER)
+  #     if count_human_marker(@squares.values_at(*line)) == 3
   #       return TTTGame::HUMAN_MARKER
   #     # elsif @squares[line[0]].marker == TTTGame::COMPUTER_MARKER &&
   #     #   @squares[line[1]].marker == TTTGame::COMPUTER_MARKER &&
   #     #   @squares[line[2]].marker == TTTGame::COMPUTER_MARKER
-  #     elsif winning_marker_count?(line, TTTGame::COMPUTER_MARKER)
+  #     elsif count_computer_marker(@squares.values_at(*line)) == 3
   #       return TTTGame::COMPUTER_MARKER
   #     end
   #   end
   #   nil
   # end
+
+  def winning_count_reached?(line, mark) # improvement 9
+    # @squares.values_at(*line) is an arr of Square objs
+    # @squares.values_at(*line).map(&:marker) is an arr of markers
+    @squares.values_at(*line).map(&:marker).count(mark) == 3
+  end
+
+  def winning_marker # rtn the winning marker or nil # improvement 4
+    WINNING_LINES.each do |line|
+      # # if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
+      # #   @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
+      # #   @squares[line[2]].marker == TTTGame::HUMAN_MARKER
+        # if winning_count_reached?(line, TTTGame::HUMAN_MARKER)
+        #   return TTTGame::HUMAN_MARKER
+      # # elsif @squares[line[0]].marker == TTTGame::COMPUTER_MARKER &&
+      # #   @squares[line[1]].marker == TTTGame::COMPUTER_MARKER &&
+      # #   @squares[line[2]].marker == TTTGame::COMPUTER_MARKER
+        # elsif winning_count_reached?(line, TTTGame::COMPUTER_MARKER)
+        #   return TTTGame::COMPUTER_MARKER
+      TTTGame::MARKERS.each do |marker| # improvement 9
+        # must disable the clear method to display the following debug output ...
+        # p "line is #{line}, marker is #{marker}, " +
+        #   "count is #{@squares.values_at(*line).map(&:marker).count(marker)}"
+        return marker if winning_count_reached?(line, marker) # improvement 9
+      end
+    end
+    nil
+  end
 
   def reset
     clear # improvement 1
@@ -91,6 +95,24 @@ class Board # reps state of the board
 
   def clear # improvement 1
     system 'clear'
+  end
+
+  def draw # improvement 6
+    puts "     |     |"
+    # puts "  #{get_square_at(1)}  |  #{get_square_at(2)}  |  #{get_square_at(3)}"
+    # improvement 7 # little improvement; better to use the getter method ?
+    puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}" # improvement 7
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    # puts "  #{get_square_at(4)}  |  #{get_square_at(5)}  |  #{get_square_at(6)}"
+    puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}" # improvement 7
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    # puts "  #{get_square_at(7)}  |  #{get_square_at(8)}  |  #{get_square_at(9)}"
+    puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}" # improvement 7
+    puts "     |     |"
   end
 end
 
@@ -123,6 +145,7 @@ end
 class TTTGame
   HUMAN_MARKER = 'X'
   COMPUTER_MARKER = 'O'
+  MARKERS = [HUMAN_MARKER, COMPUTER_MARKER]
 
   attr_reader :board, :human, :computer
 
@@ -146,6 +169,11 @@ class TTTGame
     display_board
   end
 
+  def display_marker_message # improvement 6
+    puts "You are an #{HUMAN_MARKER}.  Computer is an #{COMPUTER_MARKER}."
+    puts
+  end
+
   # def display_board(clear=true)
   #   system 'clear' if clear
   # def display_board(clear_screen=true) # improvement 1
@@ -153,21 +181,22 @@ class TTTGame
   # def display_board(clear_screen: true) # improvement 2
   def display_board # improvement 3
     # board.clear if clear_screen # improvement 3
-
-    puts "You are an #{HUMAN_MARKER}.  Computer is an #{COMPUTER_MARKER}."
-    puts ""
-    puts "     |     |"
-    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}"
-    puts "     |     |"
-    puts ""
+    # puts "You are an #{HUMAN_MARKER}.  Computer is an #{COMPUTER_MARKER}."
+    # puts ""
+    display_marker_message # improvement 6
+    # puts "     |     |"
+    # puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |  #{board.get_square_at(3)}"
+    # puts "     |     |"
+    # puts "-----+-----+-----"
+    # puts "     |     |"
+    # puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |  #{board.get_square_at(6)}"
+    # puts "     |     |"
+    # puts "-----+-----+-----"
+    # puts "     |     |"
+    # puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |  #{board.get_square_at(9)}"
+    # puts "     |     |"
+    board.draw # improvement 6
+    puts
   end
 
   def human_moves
@@ -178,11 +207,13 @@ class TTTGame
       break if board.unmarked_keys.include?(square)
       puts "Sorry, that's not a valid choice."
     end
-    board.set_square_at(square, human.marker)
+    # board.set_square_at(square, human.marker)
+    board[square] = human.marker # improvement 8
   end
 
   def computer_moves
-    board.set_square_at(board.unmarked_keys.sample, computer.marker)
+    # board.set_square_at(board.unmarked_keys.sample, computer.marker)
+    board[board.unmarked_keys.sample] = computer.marker # improvement 8
   end
 
   def display_result
@@ -209,10 +240,13 @@ class TTTGame
     answer == 'y'
   end
 
+  def display_play_again_message # improvement 5
+    puts "Let's play again !"
+  end
+
   def reset # improvement 5
     board.reset
     # system 'clear' # improvement 1
-    puts "Let's play again !"
   end
 
   def play
@@ -238,6 +272,7 @@ class TTTGame
       # # system 'clear' # improvement 1
       # puts "Let's play again !"
       reset # improvement 5
+      display_play_again_message # improvement 5
     end
     display_goodbye_message
   end
