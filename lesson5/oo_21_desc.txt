@@ -1,0 +1,34 @@
+21 is a two-participant game (Player and Dealer).  Each participant is dealt 2 cards (one face-up,
+one face-down) from a deck of 52 cards.  Each participant can see their own cards and the face-up
+card of their opponent.
+
+Bust: If a participants cards total > 21, the participant has busted.
+
+Player's turn:  The Player either stays (no more cards) or hits (is dealt another card from the
+deck).  If the Player busts, the game is over.  Otherwise, once the Player stays, it is the
+Dealer's turn.
+
+Dealer's turn:  The Dealer must hit until the total of their cards is >= 17.
+
+Winner evaluation:  If someone busts, the other participant wins.  Otherwise, the participant
+whose card total is closest to 21 wins.  Otherwise, it's a tie.
+
+***
+
+nouns:
+participant (Player, Dealer)
+deck
+card
+total
+turn
+
+
+verbs:
+deal
+bust
+stay
+hit
+evaluate
+
+
+Player states: name, hand, total
