@@ -1,9 +1,11 @@
-# In the reference implementation, we use a Hand module that is mixed into Player and Dealer.
+# In the reference implementation, we use a Hand module that is mixed into
+# Player and Dealer.
 
-# Let the Deck class do the dealing (it's actually irrelevant who deals, other than the ordering
-# of who goes first).  That way, both Player and Dealer are both generic.
-require 'pry'
+# Let the Deck class do the dealing (it's actually irrelevant who deals, other
+# than the ordering of who goes first).  That way, both Player and Dealer are
+# both generic.
 
+# require 'pry'
 
 class Participant
   # what goes in here? all the redundant behaviors from Player and Dealer?
@@ -34,22 +36,23 @@ class Participant
     # binding.pry
     ttl = 0
     cards.each { |card| ttl += card.value }
-    cards.each { |card| ttl -= 10 if ttl > Deck::MAX_BREAK_POINT && card.name == 'A' }
+    cards.each do |card|
+      ttl -= 10 if ttl > Deck::MAX_BREAK_POINT && card.name == 'A'
+    end
     self.total = ttl
   end
 end
 
-
 class Player < Participant
   def set_name
-    # puts "Please enter your name:"
-    # choice = nil
-    # loop do
-    #   choice = gets.chomp
-    #   break unless choice == ''
-    # end
-    # self.name = choice
-    self.name = "Bob" # *** forced
+    puts "Please enter your name:"
+    choice = nil
+    loop do
+      choice = gets.chomp
+      break unless choice == ''
+    end
+    self.name = choice
+    # self.name = "Bob" # *** force
   end
 
   def player_choice
@@ -81,7 +84,6 @@ class Player < Participant
   end
 end
 
-
 class Dealer < Participant
   COMPUTERS = %w(Hal9000 R2D2 Chappie DeepThought)
 
@@ -93,6 +95,10 @@ class Dealer < Participant
   #   # does the dealer or the deck deal?
   # end
 
+  def set_name
+    self.name = COMPUTERS.sample
+  end
+
   def turn(deck)
     loop do
       display_hand
@@ -101,12 +107,7 @@ class Dealer < Participant
       cards << deck.shuffled_cards.pop
     end
   end
-
-  def set_name
-    self.name = COMPUTERS.sample
-  end
 end
-
 
 class Deck
   DEALER_BREAK_POINT = 17 # usually 17
@@ -116,7 +117,6 @@ class Deck
   attr_accessor :shuffled_cards
 
   def initialize(player, dealer)
-
     # obviously, we need some data structure to keep track of cards
     # array, hash, something else?
     @suits = [
@@ -140,7 +140,6 @@ class Deck
   end
 end
 
-
 class Suit # suit is actually irrelevant in the game '21'
   attr_reader :suited_cards
 
@@ -158,7 +157,6 @@ class Suit # suit is actually irrelevant in the game '21'
   end
 end
 
-
 class Card
   attr_reader :name, :value # suit is irrelevant
 
@@ -170,21 +168,27 @@ class Card
   end
 end
 
-
-class Score
-  RESULT = ["Dealer wins", "It's a tie", "Player wins"]
+class Score # this class would be more useful if we kept score
+  RESULT = ["Dealer", "It's a tie", "Player"]
 
   attr_accessor :result
 
-  def initialize
+  def initialize(player, dealer)
     @result = nil
+    @player = player # CO
+    @dealer = dealer # CO
   end
 
   def show_result
-    puts "#{@result} !"
+    if result == RESULT[0]
+      puts "#{@dealer.name} wins !"
+    elsif result == RESULT[2]
+      puts "#{@player.name} wins !"
+    else
+      puts "#{result} !"
+    end
   end
 end
-
 
 class Game
   attr_reader :deck, :player, :dealer, :score
@@ -193,14 +197,19 @@ class Game
     @player = Player.new
     @dealer = Dealer.new
     @deck = Deck.new(player, dealer)
-    @score = Score.new
+    @score = Score.new(player, dealer)
   end
 
   def setup_game
+    reset
     display_welcome_message
     player.set_name
     dealer.set_name
     # p player.name, dealer.name
+  end
+
+  def reset
+    system 'clear'
   end
 
   def display_welcome_message
@@ -209,27 +218,18 @@ class Game
 
   def show_initial_cards
     player.display_hand
-    dealer.display_hand
-    puts "#{dealer.name} has #{prefixed_str(dealer.cards[1].name)}"
+    # dealer.display_hand
+    puts "#{dealer.name} has #{prefix_str(dealer.cards[1].name)}"
   end
 
   # rtn the spec'd str w/ either 'an ' or 'a ' prefixed to it, depending on the
   # 1st char of the str
-  def prefixed_str(str)
+  def prefix_str(str)
     (%w(A 8).include?(str.chr) ? 'an ' : 'a ') << str
   end
 
-  def compare_cards # this could be a Participant protected method ***
-    score.result = Score::RESULT[(player.total <=> dealer.total) + 1]
-  end
-
-  def start
-    # what's the sequence of steps to execute the game play?
-    setup_game
-    deck.deal
-    show_initial_cards
+  def take_turns_and_evaluate
     player.turn(deck)
-
     if player.busted?
       score.result = Score::RESULT[0] # puts "Dealer wins !"
     else
@@ -237,12 +237,43 @@ class Game
       if dealer.busted?
         score.result = Score::RESULT[2] # puts "Player wins !"
       else
-        compare_cards
+        compare_cards # could re-def to <=> method
       end
     end
-    score.show_result
+  end
+
+  def compare_cards # this could be a Participant protected method
+    score.result = Score::RESULT[(player.total <=> dealer.total) + 1]
+  end
+
+  def play_again?
+    answer = nil
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w(y n).include?(answer)
+      puts "Sorry, must be y or n"
+    end
+    answer == 'y'
+  end
+
+  def display_goodbye_message
+    puts "Thanks for playing #{Deck::MAX_BREAK_POINT}.  Goodbye !"
+  end
+
+  def start
+    # what's the sequence of steps to execute the game play?
+    setup_game
+    loop do
+      deck.deal
+      show_initial_cards
+      take_turns_and_evaluate
+      score.show_result
+      break unless play_again?
+      reset
+    end
+    display_goodbye_message
   end
 end
-
 
 Game.new.start
