@@ -1,14 +1,13 @@
-# class Person
-#   attr_accessor :name
-# end
-
 class Person
-  def name= (name)
-    @first, @second = name.split(' ') # split the fullname into 2 instance vars
+  # attr_accessor :name
+
+  def name=(name)
+    @first, @last = name.split
   end
 
   def name
-    "#{@first} #{@second}" # rejoin the instance vars
+    @first + ' ' + @last
+    # "#{@first} #{@last}"
   end
 
   def first_name # just for fun

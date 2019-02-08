@@ -16,8 +16,8 @@ class Bingo < Game # allows Bingo to inherit the play method from the Game class
   end
 
   def play
-    "beginneth thine game!"
+    "Beginneth thine game!"
   end
 end
 
-Bingo.new.play # => "beginneth thine game"
+Bingo.new.play # => "Beginneth thine game!"

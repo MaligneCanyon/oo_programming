@@ -8,8 +8,6 @@ class Oracle
   end
 end
 
-What is the result of calling
-
 oracle = Oracle.new # creates an instance of the Oracle class
 
 oracle.predict_the_future # calls the ptf instance method, which

@@ -1,4 +1,5 @@
-# - to create an instance of the Bag class, need to call the .new class method and pass it two args
+# - to create an instance of the Bag class, need to call the .new class method
+#   and pass it two args
 
 class Bag
   def initialize(color, material)

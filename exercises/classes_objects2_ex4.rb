@@ -1,18 +1,17 @@
 class Cat
+  def self.generic_greeting
+    puts "Hello! I'm a #{self.name.downcase}!"
+    puts "Hello! I'm a #{self}!" # 'Cat' is capitalized
+  end
+
   attr_reader :name
 
   def initialize(name)
     @name = name
   end
 
-  def self.generic_greeting # 'self' refers to the calling obj (the class itself w/i a class method)
-    puts "Hello! I'm a cat!"
-    puts "Hello #{self}."
-  end
-
-  def personal_greeting # 'name' is a reader method here, so using 'self' is optional
+  def personal_greeting
     puts "Hello! My name is #{name}!"
-    puts "Hi #{self.name}."
   end
 end
 

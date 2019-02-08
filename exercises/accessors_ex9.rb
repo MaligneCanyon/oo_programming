@@ -15,17 +15,16 @@ puts person1.age
 # Expected output:
 # 80
 
-
 # supplied alt version:
 # class Person
 #   def age=(age)
 #     @age = double(age)
 #   end
-
+#
 #   def age
 #     double(@age)
 #   end
-
+#
 #   private
 #   def double(value)
 #     value * 2

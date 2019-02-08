@@ -1,16 +1,13 @@
-
 class Cat
   # can def COLOR inside or outside 'Cat'; inside provides better namespacing
-  COLOR = %w(orange blue purple calico)
-
-  attr_reader :name
+  COLOUR = %w(orange blue purple calLico)
 
   def initialize(name)
     @name = name
   end
 
   def greet
-    puts "Hello! My name is #{name} and I'm a #{COLOR.sample} cat!"
+    puts "Hello! My name is #{@name} and I'm a #{COLOUR.sample} cat!"
   end
 end
 

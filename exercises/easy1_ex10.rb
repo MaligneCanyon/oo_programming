@@ -6,21 +6,21 @@ class Vehicle
     @model = model
   end
 
+  def wheels
+    self.class::WHEELS
+  end
+
   def to_s
-    "#{make} #{model}"
+    "#{make} #{model} #{wheels}"
   end
 end
 
 class Car < Vehicle
-  def wheels
-    4
-  end
+  WHEELS = 4
 end
 
 class Motorcycle < Vehicle
-  def wheels
-    2
-  end
+  WHEELS = 2
 end
 
 class Truck < Vehicle
@@ -31,8 +31,10 @@ class Truck < Vehicle
     @payload = payload
   end
 
-  def wheels
-    6
+  WHEELS = 6
+
+  def to_s
+    super + " #{payload}"
   end
 end
 

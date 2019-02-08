@@ -4,6 +4,10 @@ class Person
   def initialize(first_name, last_name)
     @first_name = first_name.capitalize
     @last_name = last_name.capitalize
+
+    # this works too (uses the setter methods)
+    # self.first_name = first_name
+    # self.last_name = last_name
   end
 
   def first_name=(first_name)

@@ -1,6 +1,6 @@
-- use the ancestors method to find where R. looks for a method (the lookup chain)
+- use the ancestors method to find where R. looks for a method (the method lookup chain)
 - method lookup chain for Orange and HotSauce classes is
-  self > Taste > Object > Kernal > BasicObject
+  self > Taste > Object > Kernel > BasicObject
 
 module Taste
   def flavor(flavor)

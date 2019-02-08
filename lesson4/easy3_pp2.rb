@@ -18,4 +18,5 @@ end
 
 # case 5:
 
-Hello.hi # => NoMethodError # can fix by prefixing the Hello#hi and Greeting#greet method names w/ 'self'
+Hello.hi # => NoMethodError
+# can fix by prefixing the Hello#hi and Greeting#greet method names w/ 'self'

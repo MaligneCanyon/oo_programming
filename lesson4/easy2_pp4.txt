@@ -1,4 +1,4 @@
-- use 'attr_accessor :type' to remove the explicit 'type' and 'type=' method defs from the class
+- add 'attr_accessor :type' and remove the explicit 'type' and 'type=' method defs from the class
 
 class BeesWax
   def initialize(type)

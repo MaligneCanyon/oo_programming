@@ -18,9 +18,8 @@ class Computer
   end
 
   def show_template
-    # calls the setter method, which rtns its input arg (nil in this case); so show_template rtns nil ?
-    # no, calls the getter method ('self' is superfulous), which
-    # rtns the value of the @template instance var (as in the first Computer class def)
+    # calls the getter method ('self' is superfulous), which rtns the value of the
+    # @template instance var (as in the first Computer class def)
     # => no dif in fn'ality
     self.template
   end

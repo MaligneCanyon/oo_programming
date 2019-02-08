@@ -6,9 +6,9 @@ class Pet
   end
 
   def to_s
-    @name.upcase!
-    "My name is #{@name}."
-    # "My name is #{@name.upcase}."
+    # @name.upcase!
+    # "My name is #{@name}."
+    "My name is #{@name.upcase}."
   end
 end
 
@@ -22,15 +22,15 @@ fluffy = Pet.new(name)
 # puts name # => "FLUFFY" # calls normal to_s on (mutated) local var 'name'
 
 # corrected
-puts fluffy.name # => "Fluffy"
-puts fluffy # "My name is FLUFFY" # => calls the re-def'd to_s on the class instance; doesn't mutate @name
-puts fluffy.name # => "Fluffy"
-puts name # => "Fluffy"
+# puts fluffy.name # => "Fluffy"
+# puts fluffy # "My name is FLUFFY" # => calls the re-def'd to_s on the class instance; doesn't mutate @name
+# puts fluffy.name # => "Fluffy"
+# puts name # => "Fluffy"
 
 name = 42
 fluffy = Pet.new(name)
 name += 1 # re-assigns local var 'name' to point to numeric obj '43'
-puts fluffy.name
-puts fluffy
-puts fluffy.name
+puts fluffy.name # => 42
+puts fluffy # => My name is 42.
+puts fluffy.name # => 42
 puts name # => 43 # outside the class, 'name' is simply a local var

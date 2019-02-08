@@ -24,5 +24,3 @@ elsif bills_wallet < pennys_wallet
 else
   puts 'Bill and Penny have the same amount of money.'
 end
-
-puts bills_wallet.amount # => NoMethodError

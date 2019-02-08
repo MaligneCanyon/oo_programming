@@ -1,6 +1,6 @@
-- when self is used in the def of a method, it indicates that we are def'ing a class method
-- in this context, self refers to the class itself
-- in this example, self refers to Cat class
+# - when self is used in the def of a method, it indicates that we are def'ing a class method
+# - in this context, self refers to the class itself
+# - in this example, self refers to Cat class
 
 class Cat
   @@cats_count = 0
@@ -15,4 +15,3 @@ class Cat
     @@cats_count
   end
 end
-

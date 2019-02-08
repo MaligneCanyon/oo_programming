@@ -16,5 +16,5 @@ cat1 = Cat.new('Black')
 p Cat.ancestors # [Cat, Animal, Object, Kernel, BasicObject]
 cat1.color
 
-# when the color method is located, R. stops searching, so only Cat and Animal
-# are searched
+# when the color method is located, R. stops searching
+# so only Cat and Animal are searched

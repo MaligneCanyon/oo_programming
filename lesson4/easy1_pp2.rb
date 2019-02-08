@@ -1,5 +1,5 @@
-# include the Speed module in each of the classes and call the go_fast instance method on an instance of
-# each class
+# include the Speed module in each of the classes and call the go_fast
+# instance method on an instance of each class
 
 module Speed
   def go_fast

@@ -1,7 +1,7 @@
 class Person
   attr_reader :name
 
-  def name= (name)
+  def name=(name)
     @name = name.capitalize
   end
 end

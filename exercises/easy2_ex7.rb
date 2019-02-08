@@ -7,19 +7,26 @@ class Pet
   end
 end
 
+# could either use an instance var to count the num of pets an owner has adopted,
+# or have an arr of pets for each owner (which could be handy later).
 class Owner
-  attr_accessor :number_of_pets
+  # attr_accessor :number_of_pets
+  attr_reader :pets
   attr_reader :name
 
   def initialize(name)
     @name = name
-    @number_of_pets = 0
+    # @number_of_pets = 0
+    @pets = []
+  end
+
+  def number_of_pets
+    pets.size
   end
 end
 
 class Shelter
   # @@adoptions = {} # better to use an instance var (could have > 1 shelter)
-
   def initialize
     @adoptions = {}
   end
@@ -48,8 +55,8 @@ class Shelter
     else
       @adoptions[owner.name] = [pet]
     end
-    # p @adoptions
-    owner.number_of_pets += 1
+    # owner.number_of_pets += 1
+    owner.pets << pet
   end
 
   def print_adoptions

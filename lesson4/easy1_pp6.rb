@@ -14,4 +14,5 @@ end
 cubit = Cube.new(10)
 cubit.print_vol
 
+# alt:
 p cubit.instance_variable_get('@volume')

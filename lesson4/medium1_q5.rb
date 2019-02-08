@@ -3,6 +3,7 @@ class KrispyKreme
     @filling_type = filling_type
     @glazing = glazing
   end
+
   def to_s
     "#{@filling_type ? @filling_type : 'Plain'}" + (@glazing ? " with #{@glazing}" : "")
   end

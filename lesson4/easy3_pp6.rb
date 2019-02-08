@@ -16,4 +16,4 @@ kit = Cat.new("kitten")
 kit.make_one_year_older
 puts kit.age
 
-# in this case self and @ are the same thing and can be used interchangeably
+# "in this case self and @ are the same thing and can be used interchangeably"

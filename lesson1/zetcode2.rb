@@ -19,6 +19,6 @@ end
 p Some.ancestors # rtns an arr of class and module names
 
 s = Some.new
-s.method1
+s.method1 # => NoMethodError
 # protected methods can be called w/ or w/o the 'self' keyword, but not from
 # outside the class def'n

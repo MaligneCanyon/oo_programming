@@ -1,8 +1,7 @@
-module Fuelable
-  # attr_writers for fuel capacity and efficiency are not req'd
+module Moveable
+  attr_accessor :speed, :heading
 
   def initialize(km_traveled_per_liter, liters_of_fuel_capacity)
-    # def common instance vars for each of the encompassing classes
     @fuel_efficiency = km_traveled_per_liter
     @fuel_capacity = liters_of_fuel_capacity
   end
@@ -12,17 +11,19 @@ module Fuelable
   end
 end
 
+# the Moveable module contains all common behaviours, and Vehicle adds nothing
+# else, so don't really need the Vehicle superclass
 class Vehicle
-  include Fuelable
-  # no initialize method here, so look in the Fuelable module
+  include Moveable
+  # no initialize method here, so look in the Moveable module
 end
 
-class WheeledVehicle < Vehicle
-  attr_accessor :speed, :heading # could move this to the module too
+class WheeledVehicle
+  include Moveable
 
   def initialize(tire_array, km_traveled_per_liter, liters_of_fuel_capacity)
-    super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
     @tires = tire_array
+    super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
   end
 
   def tire_pressure(tire_index)
@@ -49,13 +50,12 @@ class Motorcycle < WheeledVehicle
 end
 
 class Boat < Vehicle
-  attr_accessor :speed, :heading # could move this to the module too
   attr_reader :propeller_count, :hull_count
 
-  def initialize(num_propellers, num_hulls, km_traveled_per_liter, liters_of_fuel_capacity)
+  def initialize(num_propellers=1, num_hulls=1, km_traveled_per_liter, liters_of_fuel_capacity)
+    @props = num_propellers
+    @hulls = num_hulls
     super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
-    @propeller_count = num_propellers
-    @hull_count = num_hulls
   end
 end
 
@@ -63,23 +63,14 @@ class Catamaran < Boat
 end
 
 class Motorboat < Boat
-  def initialize(km_traveled_per_liter, liters_of_fuel_capacity)
-    super(1, 1, km_traveled_per_liter, liters_of_fuel_capacity)
-  end
 end
 
-car = Auto.new
-p car
+p car = Auto.new
+p bike = Motorcycle.new
+p boat1 = Catamaran.new(2,2,10.0,100.0)
+p boat2 = Motorboat.new(7.0,50.0)
+
 p car.range
-
-bike = Motorcycle.new
-p bike
 p bike.range
-
-cataboat = Catamaran.new(2, 2, 10.0, 50.0)
-p cataboat
-p cataboat.range
-
-motorboat = Motorboat.new(6.0, 20.0)
-p motorboat
-p motorboat.range
+p boat1.range
+p boat2.range

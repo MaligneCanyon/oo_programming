@@ -6,7 +6,6 @@ end
 
 class Cat
   include Walkable
-
   attr_reader :name
 
   def initialize(name)

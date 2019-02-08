@@ -13,11 +13,7 @@ class Car < Vehicle
 end
 
 truck1 = Truck.new(1994)
-puts truck1.year
+puts truck1.year # 1994
 
 car1 = Car.new(2006)
-puts car1.year
-
-# Expected output:
-# 1994
-# 2006
+puts car1.year # 2006

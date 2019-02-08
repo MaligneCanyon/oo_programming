@@ -19,7 +19,7 @@ person = Person.new
 # private_method has been called in the public_method
 
 # CALL_PRIVATE_METHOD == false
-p person # => #<Person:0x0000000137fa90>
+p person # => #<Person:0x0000000137fa90> # @privately_defined_var does not exist
 p person.privately_defined_var # => nil
 p person.public_method # => nil
 p person # => #<Person:0x0000000137fa90>

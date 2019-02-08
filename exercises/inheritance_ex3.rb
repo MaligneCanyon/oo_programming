@@ -28,4 +28,6 @@ puts truck1.bed_type # only need the reader method, not the setter one
 # 1994
 # Short
 
-car1 = Car.new(1881, 'Non-existant') # ArgumentError
+car1 = Car.new(2006)
+puts car1.year # 2006
+car1 = Car.new(1881, 'Non-existent') # ArgumentError

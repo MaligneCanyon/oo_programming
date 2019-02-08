@@ -10,8 +10,8 @@ class Rectangle
 end
 
 class Square < Rectangle
-  def initialize(dimension)
-    super(dimension, dimension)
+  def initialize(side)
+    super(side, side)
   end
 end
 

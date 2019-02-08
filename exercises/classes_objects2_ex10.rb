@@ -2,7 +2,7 @@ class Person
   attr_writer :secret
 
   def compare_secret(other_person)
-    self.secret == other_person.secret
+    secret == other_person.secret
   end
 
   protected
@@ -18,5 +18,5 @@ person2.secret = 'Shh.. this is a different secret!'
 
 puts person1.compare_secret(person2)
 
-# we can't call the protected (reader) method outside the class, so
+# we can't call the protected (getter) method outside the class, so
 puts person1.secret # => NoMethodError

@@ -6,16 +6,13 @@ class Pet
 end
 
 class Cat < Pet
-  attr_reader :name, :age, :color
-
-  def initialize(cat_name, cat_age, cat_color)
-    super(cat_name, cat_age)
-    @color = cat_color
+  def initialize(name, age, colours)
+    super(name, age)
+    @colours = colours
   end
 
   def to_s
-    # could use instance vars here as well; don't need attr_reader(s) then
-    "My cat #{name} is #{age} years old and has #{color} fur."
+    "My cat #{@name} is #{@age} years old and has #{@colours} fur."
   end
 end
 

@@ -11,11 +11,9 @@
 #   - center the message w/i the width
 #     - set @message to msg.center(width)
 
-
 class Banner
-
   # base_case
-  # def initialize(message, width = 0)
+  # def initialize(message)
   #   @message = message
   # end
 
@@ -39,11 +37,13 @@ class Banner
   private
 
   def horizontal_rule
-    "+#{'-' * (@message.size + 2)}+"
+    '+' + '-' * (@message.size + 2) + '+'
+    # "+#{'-' * (@message.size + 2)}+"
   end
 
   def empty_line
-    "|#{' ' * (@message.size + 2)}|"
+    '|' + ' ' * (@message.size + 2) + '|'
+    # "|#{' ' * (@message.size + 2)}|"
   end
 
   def message_line
@@ -78,7 +78,6 @@ puts banner
 # puts banner
 # banner = Banner.new('To boldly go where no one has gone before.', 100)
 # puts banner
-
 
 banner = Banner.new('')
 puts banner

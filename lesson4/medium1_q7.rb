@@ -7,10 +7,10 @@ class Light
   end
 
   # def self.light_information
-  def self.information
+  def self.info
     "I want to turn on the light with a brightness level of super high and a colour of green"
   end
 end
 
 # Light.light_information # awkward
-p Light.information # better
+p Light.info # better

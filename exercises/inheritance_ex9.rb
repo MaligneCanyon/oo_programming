@@ -21,6 +21,5 @@ end
 
 bird1 = Bird.new('Red')
 p Bird.ancestors
-# #color is found (exclusively) in Animal
 # Bird -> Flyable -> Animal is the lookup path
 bird1.color
