@@ -16,6 +16,7 @@ class Deck
   #   - for each rank
   #     - instantiate a card obj
   #     - save the the card to the arr
+
   def draw # draw one card at random
     build_deck if cards.empty?
     ndx = (0...cards.size).to_a.sample
@@ -28,7 +29,8 @@ class Deck
     SUITS.each do |suit|
       RANKS.each { |rank| cards << Card.new(rank, suit) }
     end
-    # puts cards
+    # could use cards.shuffle! here, then use cards.pop in #draw
+    # (perhaps better than pulling a card from the middle of the deck)
   end
 end
 
@@ -49,12 +51,12 @@ class Card
     @suit = suit
   end
 
-  def values
+  def value
     CARD_VALUES.fetch(rank, rank)
   end
 
   def <=>(other)
-    values <=> other.values
+    value <=> other.value
   end
 
   # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.

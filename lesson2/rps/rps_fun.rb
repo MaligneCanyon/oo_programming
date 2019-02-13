@@ -1,3 +1,4 @@
+require 'pry'
 # bonus0
 # Minor adjustments to the rps_rubocop game
 
@@ -47,104 +48,97 @@
 # the Computer's move is chosen.
 
 # begin bonus3
-class Rock
-  attr_reader :value
+class Move
+  attr_reader :name, :defeats
 
-  def initialize
-    @value = ['scissors', 'lizard']
+  def >(other)
+    # bonus2
+    # rock? && other.scissors? || paper? && other.rock? ||
+    #   scissors? && other.paper?
+    # ... expands to
+    # rock? && (other.scissors? || other.lizard?) ||
+    #   paper? && (other.rock? || other.Spock) ||
+    #   scissors? && (other.paper? || other.lizard) ||
+    #   lizard? && (other.Spock? || other.paper) ||
+    #   Spock? && (other.scissors? || other.rock)
+    # ... which simplifies to
+    defeats.include?(other.name)
+  end
+
+  def to_s
+    # @value
+
+    # value
+    name # fallout from bonus2
   end
 end
-class Paper
-  attr_reader :value
 
+class Rock < Move
   def initialize
-    @value = ['rock', 'Spock']
+    @name = 'rock'
+    @defeats = ['scissors', 'lizard']
   end
 end
-class Scissors
-  attr_reader :value
-
+class Paper < Move
   def initialize
-    @value = ['paper', 'lizard']
+    @name = 'paper'
+    @defeats = ['rock', 'Spock']
   end
 end
-class Lizard
-  attr_reader :value
-
+class Scissors < Move
   def initialize
-    @value = ['paper', 'Spock']
+    @name = 'scissors'
+    @defeats = ['paper', 'lizard']
   end
 end
-class Spock
-  attr_reader :value
-
+class Lizard < Move
   def initialize
-    @value = ['rock', 'scissors']
+    @name = 'lizard'
+    @defeats = ['paper', 'Spock']
+  end
+end
+class Spock < Move
+  def initialize
+    @name = 'Spock'
+    @defeats = ['rock', 'scissors']
   end
 end
 # end bonus3
 
-class Move
+class Player
   # begin bonus2
-  # VALUES = ['rock', 'paper', 'scissors']
-  # VALUES = {
+  # MOVES = ['rock', 'paper', 'scissors']
+  # MOVES = {
   #   'rock'     => ['scissors', 'lizard'],
   #   'paper'    => ['rock', 'Spock'],
   #   'scissors' => ['paper', 'lizard'],
   #   'lizard'   => ['paper', 'Spock'],
   #   'Spock'    => ['rock', 'scissors']
   # }
-  VALUES = {
-    'rock'     => Rock.new.value,
-    'paper'    => Paper.new.value,
-    'scissors' => Scissors.new.value,
-    'lizard'   => Lizard.new.value,
-    'Spock'    => Spock.new.value
-  } # bonus3
-  attr_reader :value
 
   # def rock?
-  #   @value == 'rock'
+  #   move.name == 'rock'
   # end
 
   # def paper?
-  #   @value == 'paper'
+  #   move.name == 'paper'
   # end
 
   # def scissors?
-  #   @value == 'scissors'
+  #   move.name == 'scissors'
   # end
   # end bonus2
-
-  def initialize(value)
-    @value = value
-  end
-
-  def >(other_move)
-    # bonus2
-    # rock? && other_move.scissors? || paper? && other_move.rock? ||
-    #   scissors? && other_move.paper?
-    # ... expands to
-    # rock? && (other_move.scissors? || other_move.lizard?) ||
-    #   paper? && (other_move.rock? || other_move.Spock) ||
-    #   scissors? && (other_move.paper? || other_move.lizard) ||
-    #   lizard? && (other_move.Spock? || other_move.paper) ||
-    #   Spock? && (other_move.scissors? || other_move.rock)
-    # ... which simplifies to
-    VALUES[value].include?(other_move.value)
-  end
-
-  def to_s
-    # @value
-    value # fallout from bonus2
-  end
-end
-
-class Player
-  MOVES = Move::VALUES.keys # bonus6
+  MOVES = {
+    'rock'     => Rock.new,
+    'paper'    => Paper.new,
+    'scissors' => Scissors.new,
+    'lizard'   => Lizard.new,
+    'Spock'    => Spock.new
+  } # bonus3
+  MOVE_STRS = MOVES.keys # bonus6
   # ['rock', 'paper', 'scissors', 'lizard', 'Spock']
 
-  attr_accessor :move, :name
+  attr_accessor :move, :name # 'choose' and 'set_name' are setter methods ...
   attr_accessor :score # bonus1
 
   def initialize
@@ -172,29 +166,27 @@ class Human < Player
     choice = nil
     loop do
       # puts 'Please choose rock, paper, or scissors:'
-      # puts "Please choose one of: #{Move::VALUES.keys.join(', ')}." # bonus2
-      puts "Please choose one of: #{MOVES.join(', ')}." # bonus6
+      # puts "Please choose one of: #{Move::MOVES.keys.join(', ')}." # bonus2
+      puts "Please choose one of: #{MOVE_STRS.join(', ')}." # bonus6
       choice = gets.chomp
-      # break if Move::VALUES.include?(choice)
-      # break if Move::VALUES.keys.include?(choice) # bonus2
-      break if MOVES.include?(choice) # bonus6
+      # break if Move::MOVES.include?(choice)
+      # break if Move::MOVES.keys.include?(choice) # bonus2
+      break if MOVE_STRS.include?(choice) # bonus6
       puts 'Sorry, invalid choice, try again.'
     end
-    self.move = Move.new(choice)
+    # self.move = Move.new(choice)
+    self.move = MOVES[choice]
   end
 end
 
 class Computer < Player
   COMPUTERS = %w(Hal9000 R2D2 Chappie DeepThought) # bonus0
 
-  attr_reader :stats # bonus5
   attr_accessor :personality # bonus6
 
-  def initialize(stats) # bonus5
-    @stats = stats
+  def initialize # bonus6
     super()
-
-    @personality = set_personality # bonus6
+    @personality = set_personality
     # Alternatively, could change
     #   attr_accessor :personality
     # to
@@ -219,16 +211,17 @@ class Computer < Player
     when 'R2D2'
       ['rock']
     else
-      MOVES
+      MOVE_STRS
     end
   end
 
-  def choose
-    # self.move = Move.new(Move::VALUES.sample)
-    # self.move = Move.new(Move::VALUES.keys.sample) # bonus2
+  # def choose
+  def choose(bias) # bonus5
+    # self.move = Move.new(Move::MOVES.sample)
+    # self.move = Move.new(Move::MOVES.keys.sample) # bonus2
 
     # bonus5
-    # sample_arr = Move::VALUES.keys + stats.bias
+    # sample_arr = Move::MOVES.keys + stats.bias
     # puts "#{name} sampled #{sample_arr}"
     # self.move = Move.new(sample_arr.sample)
 
@@ -236,24 +229,28 @@ class Computer < Player
     # Note: bias will not include old items that have rolled off of the (fifo)
     # history
     if name == 'Chappie' # list computers here that have a move history bias
-      self.personality = MOVES + stats.bias # bonus5
+      self.personality = MOVE_STRS + bias # bonus5
     end
     puts "#{name} sampled #{personality}."
-    self.move = Move.new(personality.sample)
+    # p self.move = Move.new(personality.sample)
+    self.move = MOVES[personality.sample]
   end
 end
 
 class Stats # bonus4
   MAX_HISTORY = 10
 
-  attr_reader :winner
+  attr_reader :human, :computer, :winner
   attr_accessor :history
 
-  def initialize
+  def initialize(human, computer)
+    @human = human # CO
+    @computer = computer # CO
     @history = []
     @winner = nil
   end
 
+  # begin bonus4
   # build_history method
   # inputs:
   # - human and computer objs
@@ -272,46 +269,51 @@ class Stats # bonus4
   # - determine the winner str from the human and computer @move instance vars
   # - create a hsh w/ the following k:v pairs
   #   - 'h' : str value of the human move
-  #   - 'c' : str value of the comuter move
+  #   - 'c' : str value of the computer move
   #   - 'w' : str representing the winner
   # - store the hsh in an arr
   # - if the arr.size > MAX_HISTORY
   #   - delete the 1st arr elem
-  def build_history(human_move, computer_move) # bonus4
-    winner =  if human_move > computer_move
-                'human'
-              elsif computer_move > human_move
-                'computer'
+  def build_history
+    human_move = human.move
+    comp_move = computer.move
+
+    winner =  if human_move > comp_move
+                # 'human'
+                human.name
+              elsif comp_move > human_move
+                # 'computer'
+                computer.name
               else
                 'tie'
               end
-    hsh = {
-      'h' => human_move.value,
-      'c' => computer_move.value,
-      'w' => winner
-    }
-    # self.history << hsh # isn't history a setter method here ? ***
-    # self.history.shift if history.size > MAX_HISTORY # and here ? ***
-    history << hsh
+    record = { 'h' => human_move.name, 'c' => comp_move.name, 'w' => winner }
+    history << record
     history.shift if history.size > MAX_HISTORY
     # p history.size
     # p history
   end
 
   # display_history method
-  # - build and output a table of recent moves # bonus4
-  def display_history(human_name, computer_name)
-    line = '-' * 51
-    puts line
+  # - build and output a table of recent moves
+  LINE = '-' * 51
+  def display_history
+    puts LINE
     puts format("|  # | %12s | %12s |    winner    |",
-                human_name[0, 12].center(12), computer_name[0, 12].center(12))
-    puts line
-    history.each_with_index do |elem, ndx|
-      puts format("| %2d | %12s | %12s | %12s |", ndx + 1, elem['h'].center(12),
-                  elem['c'].center(12), elem['w'].center(12))
+                centred(human.name), centred(computer.name))
+    puts LINE
+    history.each_with_index do |record, ndx|
+      print format("| %2d |", ndx + 1)
+      record.each_value { |str| print format(" %12s |", centred(str)) }
+      puts
     end
-    puts line
+    puts LINE
   end
+
+  def centred(str)
+    str[0, 12].center(12)
+  end
+  # end bonus4
 
   # bias method; see file bias.rb # bonus5
   def bias
@@ -322,9 +324,10 @@ class Stats # bonus4
     #   'lizard' => 0,
     #   'Spock' => 0
     # }
-    counter_hsh = Move::VALUES.transform_values { 0 }
-    history.each do |elem|
-      counter_hsh[elem['c']] += 1 if elem['w'] == 'computer'
+    counter_hsh = Player::MOVES.transform_values { 0 }
+    history.each do |record|
+      # counter_hsh[record['c']] += 1 if record['w'] == 'computer'
+      counter_hsh[record['c']] += 1 if record['w'] == computer.name
     end
     counter_hsh.map { |k, v| Array.new(v) { k } }.flatten
   end
@@ -337,10 +340,9 @@ class RPSGame
   attr_accessor :stats # bonus4
 
   def initialize
-    @stats = Stats.new # bonus4
     @human = Human.new
-    # @computer = Computer.new
-    @computer = Computer.new(stats) # bonus5
+    @computer = Computer.new
+    @stats = Stats.new(human, computer) # bonus4
   end
 
   def display_welcome_message
@@ -400,7 +402,8 @@ class RPSGame
 
   def display_score
     puts "Your score is #{human.score}; "\
-      "the computer's score is #{computer.score}."
+      "#{computer.name}'s score is #{computer.score}."
+    # "the computer's score is #{computer.score}."
     puts
   end
 
@@ -409,9 +412,11 @@ class RPSGame
   end
 
   def display_match_result
-    puts "Match is over; "\
-      "#{human.score == MATCH_POINTS ? 'you are' : 'the computer is'}" \
-      " the grand winner !"
+    puts  "Match is over; " +
+          (human.score == MATCH_POINTS ? 'you are' : "#{computer.name} is") +
+          " the grand winner !"
+    # "#{human.score == MATCH_POINTS ? 'you are' : 'the computer is'}" \
+    # " the grand winner !"
   end
 
   def reset_scores
@@ -429,22 +434,25 @@ class RPSGame
     end
   end
 
+  def game_flow
+    human.choose
+    human.display_move # bonus0
+    computer.choose(stats.bias) # bonus4
+    computer.display_move # bonus0
+    display_winner
+    count_score # bonus1
+    display_score # bonus1
+  end
+
   def play
     display_welcome_message
     loop do
       loop do # bonus1
-        human.choose
-        human.display_move # bonus0
-        computer.choose
-        computer.display_move # bonus0
-        # display_moves
-        display_winner
-        count_score # bonus1
-        display_score # bonus1
-        stats.build_history(human.move, computer.move) # bonus4
+        game_flow
+        stats.build_history # bonus4
         if match_over? # bonus1
           display_match_result # bonus1
-          stats.display_history(human.name, computer.name) # bonus4
+          stats.display_history # bonus4
           break
         end
       end

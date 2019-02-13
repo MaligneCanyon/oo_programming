@@ -1,118 +1,56 @@
 class GuessingGame
-  RANGE = 1..100
-  attr_accessor :guesses_remaining, :guess
+  attr_accessor :guess
+
+  def initialize
+    @num = (1..100).to_a.sample
+    @guess = nil
+  end
 
   def play
-    init_game
-    loop do
-      display_remaining
-      loop do
-        display_prompt
-        num = gets.to_i
-        if RANGE.include?(num)
-          self.guess = num
-          break
-        end
-        print 'Invalid guess. '
-      end
+    7.downto(1) do |x|
+      display_remaining(x)
+      get_guess
       display_result
-      break unless continue_play?
-      self.guesses_remaining -= 1
-      if guesses_remaining.zero?
-        puts "\nYou have no more guesses. You lost!"
-        break
-      end
+      break if you_won?
+    end
+    display_exit_msg
+  end
+
+  def get_guess
+    loop do
+      print "Enter a number between 1 and 100: "
+      self.guess = gets.to_i
+      break if (1..100).include?(guess)
+      print "Invalid guess. "
     end
   end
 
   private
+  attr_reader :num
 
-  attr_reader :answer
-
-  def init_game
-    @guesses_remaining = 7
-    @guess = 0
-    @answer = rand(RANGE)
-  end
-
-  def display_remaining
-    puts "\nYou have #{guesses_remaining} "\
-      "guess#{guesses_remaining > 1 ? 'es' : ''} remaining."
-  end
-
-  def display_prompt
-    print "Enter a number between #{RANGE.first} and #{RANGE.last}: "
+  def display_remaining(x)
+    puts "You have #{x} guess#{x > 1 ? "es " : " "}remaining."
   end
 
   def display_result
-    if guess < answer
-      puts "Your guess is too low.\n"
-    elsif guess > answer
-      puts "Your guess is too high.\n"
+    if guess < num
+      puts "Your guess is too low."
+    elsif guess > num
+      puts "Your guess is too high."
     else
-      puts "That's the number!\n\nYou won!"
+      puts "That's the number!"
     end
+    puts
   end
 
-  def continue_play?
-    guess != answer
+  def you_won?
+    guess == num
+  end
+
+  def display_exit_msg
+    puts you_won? ? "You won!" : "You have no more guesses! You lost!"
   end
 end
 
 game = GuessingGame.new
 game.play
-
-# You have 7 guesses remaining.
-# Enter a number between 1 and 100: 104
-# Invalid guess. Enter a number between 1 and 100: 50
-# Your guess is too low.
-
-# You have 6 guesses remaining.
-# Enter a number between 1 and 100: 75
-# Your guess is too low.
-
-# You have 5 guesses remaining.
-# Enter a number between 1 and 100: 85
-# Your guess is too high.
-
-# You have 4 guesses remaining.
-# Enter a number between 1 and 100: 0
-# Invalid guess. Enter a number between 1 and 100: 80
-
-# You have 3 guesses remaining.
-# Enter a number between 1 and 100: 81
-# That's the number!
-
-# You won!
-
-game.play
-
-# You have 7 guesses remaining.
-# Enter a number between 1 and 100: 50
-# Your guess is too high.
-
-# You have 6 guesses remaining.
-# Enter a number between 1 and 100: 25
-# Your guess is too low.
-
-# You have 5 guesses remaining.
-# Enter a number between 1 and 100: 37
-# Your guess is too high.
-
-# You have 4 guesses remaining.
-# Enter a number between 1 and 100: 31
-# Your guess is too low.
-
-# You have 3 guesses remaining.
-# Enter a number between 1 and 100: 34
-# Your guess is too high.
-
-# You have 2 guesses remaining.
-# Enter a number between 1 and 100: 32
-# Your guess is too low.
-
-# You have 1 guesses remaining.
-# Enter a number between 1 and 100: 32
-# Your guess is too low.
-
-# You have no more guesses. You lost!

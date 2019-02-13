@@ -33,15 +33,17 @@ class Shelter
 
   def adopt(owner, pet) # simplified adopt method using a collaborator
     owner.pets << pet
+    # the following is not really a list of adoptions ...
+    # ... could use an Adoption class and have a specific adoption record for
+    # each adoption
     @adoptions << owner unless @adoptions.include?(owner)
-    # p @adoptions
   end
 
   def print_adoptions
     @adoptions.each do |person|
       puts "#{person.name} has adopted the following pets:"
-      # person.pets.each { |animal| puts "a #{animal.species} named #{animal.name}" }
-      person.pets.each { |animal| puts animal }
+      # person.pets.each { |pet| puts "a #{pet.species} named #{pet.name}" }
+      person.pets.each { |pet| puts pet }
       puts
     end
   end

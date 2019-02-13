@@ -1,6 +1,3 @@
-# On lines 37 and 38 of our code, we can see that grace and ada are located at the same coordinates. So why
-# does line 39 output false? Fix the code to produce the expected output.
-
 class Person
   attr_reader :name
   attr_accessor :location
@@ -16,7 +13,6 @@ end
 
 class GeoLocation
 
-  include Comparable # include the Comparable module ...
 
   attr_reader :latitude, :longitude
 
@@ -29,11 +25,15 @@ class GeoLocation
     "(#{latitude}, #{longitude})"
   end
 
-  # Note: can't re-def <=> in the Person class, because there are
-  # no Person#latitude or Person#longitude methods
-  def <=>(other) # ... and re-def the <=> method
-    latitude <=> other.latitude && longitude <=> other.longitude
+  def ==(other)
+    latitude == other.latitude && longitude == other.longitude
   end
+
+  # this works too ...
+  # include Comparable # include the Comparable module ...
+  # def <=>(other) # ... and re-def the <=> method
+  #   latitude <=> other.latitude && longitude <=> other.longitude
+  # end
 end
 
 # Example

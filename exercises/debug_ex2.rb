@@ -23,7 +23,7 @@ class Bird < Animal
 end
 
 class FlightlessBird < Bird
-  # def initialize(diet, superpower) # not req'diet
+  # def initialize(diet, superpower) # not req'd
   #   super
   # end
 

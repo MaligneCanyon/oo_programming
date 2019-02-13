@@ -1,22 +1,22 @@
-#PM w/ duck typing
+# PM w/ duck typing
 
-class Wedding # class_of_interest
+class Wedding # main_class
   attr_reader :guests, :flowers, :songs
 
-   # w/i the class_of_interest  def a general method, pass it an arr of
-   # classes for which you want to model implementation-specific behavior
+   # w/i the main_class def a general (wrapper) method and pass it an instance
+   # of each of the classes for which you want to have implementation-specific
+   # behavior
   def prepare(preparers)
     preparers.each do |preparer|
-      # call a general (wrapper) method and pass it the class_of_interest
+      # call a general (wrapper) method and pass it an obj
       preparer.prepare_wedding(self)
     end
   end
 end
 
 class Chef
-  # def the wrapper method for each of the classes w/ implementation-specific
-  # behavior, and call the method modeling that behavior, passing it the
-  # relevant portion of the class_of_interest
+  # def the wrapper method for each of the classes, and have it call an
+  # implementation-specific method (that models behavior specific to the class)
   def prepare_wedding(wedding)
     prepare_food(wedding.guests)
   end
@@ -27,7 +27,7 @@ class Chef
 end
 
 # to add another preparer, just need to def a class and add the implementation-
-# specific code (called w/i the prepare_wedding wrapper method)
+# specific code (called w/i the wrapper method)
 
 class Decorator
   def prepare_wedding(wedding)

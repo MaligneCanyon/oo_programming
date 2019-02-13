@@ -1,5 +1,6 @@
 module Weighable
   # def Weighable.weight # works if called directly outside any class
+
   def weight # works if called directly by an instance of a class that includes the module
     "what's your weight ?"
   end
@@ -22,7 +23,7 @@ class Person < Animal
   end
 
   def print_age
-    puts "your age is #{gets_age}"
+    puts "your age is #{get_age}"
   end
 
   def instance_chk
@@ -41,7 +42,7 @@ class Person < Animal
     puts 'exiting the class method'
   end
 
-  def gets_age
+  def get_age
     @age
   end
 end
@@ -49,9 +50,9 @@ end
 
 bob = Person.new('Bob', 42)
 Person.chk
-# bob.gets_age
+# bob.get_age
 bob.print_age
 bob.instance_chk
 
-# p Weighable::weight # can call weight directly if weight def'n prefixed w/ module name
+# p Weighable::weight # can call directly if weight def'n prefixed w/ module name
 p bob.weight # doesn't work if weight def'n prefixed w/ module name

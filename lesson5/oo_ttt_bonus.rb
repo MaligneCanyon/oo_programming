@@ -1,3 +1,5 @@
+# NEW BONUS FEATURES - nb#
+
 # nb0
 # trivial fixups of solution code
 
@@ -11,8 +13,6 @@
 # nb3
 # player enters their name
 # computer name is sampled from an arr
-
-require 'pry'
 
 class Board
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
@@ -29,7 +29,8 @@ class Board
   end
 
   def unmarked_keys
-    @squares.keys.select { |key| @squares[key].unmarked? }
+    # @squares.keys.select { |key| @squares[key].unmarked? }
+    @squares.keys.reject { |key| @squares[key].marked? }
   end
 
   def full?
@@ -112,12 +113,12 @@ class Square
   end
 
   def to_s
-    @marker
+    marker
   end
 
-  def unmarked?
-    marker == INITIAL_MARKER
-  end
+  # def unmarked? # don't need both this and 'marked?'
+  #   marker == INITIAL_MARKER
+  # end
 
   def marked?
     marker != INITIAL_MARKER
@@ -155,7 +156,7 @@ class TTTGame
   # HUMAN_MARKER = "X" # nb2 del
   # COMPUTER_MARKER = "O" # nb2 del
   # FIRST_TO_MOVE = HUMAN_MARKER # nb2 del
-  FIRST_TO_MOVE = 'player' # 'player', 'computer', or 'choose' # bonus5c add
+  FIRST_TO_MOVE = 'choose' # 'player', 'computer', or 'choose' # bonus5c add
   MATCH_POINTS = 3 # bonus2 add
   MARKERS = ('a'..'z').to_a + ('A'..'Z').to_a + ('0'..'9').to_a # nb2 add
   COMPUTERS = %w(Hal9000 R2D2 Chappie DeepThought) # nb3 add
@@ -305,7 +306,15 @@ class TTTGame
     puts "Choose a square (#{joinor(board.unmarked_keys)}): " # bonus1 add
     square = nil
     loop do
-      square = gets.chomp.to_i
+      # square = gets.chomp.to_i # nb0 del
+      square = gets.to_i # nb0 add
+
+      # nb0 add (press Enter or any other key if there is only one square left)
+      if board.unmarked_keys.size == 1
+        square = board.unmarked_keys[0]
+        break
+      end
+
       break if board.unmarked_keys.include?(square)
       puts "Sorry, that's not a valid choice."
     end
@@ -360,7 +369,6 @@ class TTTGame
       break if %w(y n).include? answer
       puts "Sorry, must be y or n"
     end
-
     answer == 'y'
   end
 
@@ -381,6 +389,7 @@ class TTTGame
   end
 
   # begin bonus2 add
+  # note: a Score class would likely need human, computer and board COs
   def count_score
     if board.winning_marker == human.marker
       human.score += 1

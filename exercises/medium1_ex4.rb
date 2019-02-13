@@ -72,3 +72,42 @@ puts queue.dequeue == nil
 # p queue
 
 # The above code should display true 15 times. <= 7 times
+
+# alt:
+# class CircularQueue
+#   attr_accessor :new, :old, :arr
+#   attr_reader :size
+
+#   def initialize(size)
+#     @size = size
+#     @arr = Array.new(size)
+#     @old = nil
+#     @new = nil
+#   end
+
+#   def enqueue(obj)
+#     self.new = increment(new)
+#     arr[new] = obj
+#     # incr old if we are replacing the oldest elem,
+#     # or if we are just starting out
+#     self.old = increment(old) if new == old || old == nil
+#   end
+
+#   def dequeue
+#     return nil unless old # rtn nil if all arr elems are nil
+#     oldest = arr[old] # save the oldest arr elem
+#     arr[old] = nil # replace the oldest elem w/ nil
+#     self.old = increment(old)
+#     oldest
+#   end
+
+#   def increment(ndx)
+#     if ndx # there's something other than nil in the arr
+#       ndx += 1
+#       ndx = 0 if ndx >= size # rollover
+#     else
+#       ndx = 0
+#     end
+#     ndx
+#   end
+# end

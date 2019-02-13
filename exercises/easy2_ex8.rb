@@ -4,7 +4,8 @@ class Expander
   end
 
   def to_s
-    # can't call a private method using any explicit receiver, incl'ing 'self'
+    # can't call a private method using an explicit
+    # receiver (unless its a setter method)
     # self.expand(3)
     expand(3)
   end

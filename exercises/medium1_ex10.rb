@@ -1,62 +1,70 @@
 class Card
   include Comparable
-  attr_reader :rank, :suit
 
-  VALUES = { 'Jack' => 11, 'Queen' => 12, 'King' => 13, 'Ace' => 14 }
+  CARD_VALUES = {
+    'Ace'   => 14,
+    'King'  => 13,
+    'Queen' => 12,
+    'Jack'  => 11
+  }.freeze
+
+  attr_reader :rank, :suit
 
   def initialize(rank, suit)
     @rank = rank
     @suit = suit
   end
 
+  def value
+    CARD_VALUES.fetch(rank, rank)
+  end
+
+  def <=>(other)
+    value <=> other.value
+  end
+
+  # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
   def to_s
     "#{rank} of #{suit}"
-  end
-
-  def value
-    VALUES.fetch(@rank, @rank)
-  end
-
-  def <=>(other_card)
-    value <=> other_card.value
   end
 end
 
 class Deck
   RANKS = ((2..10).to_a + %w(Jack Queen King Ace)).freeze
-  # SUITS = %w(Hearts Clubs Diamonds Spades).freeze
   SUITS = %w(Clubs Diamonds Hearts Spades).freeze
 
+  attr_reader :cards
+
   def initialize
-    reset
+    @cards = []
   end
 
-  def draw
-    reset if @deck.empty?
-    @deck.pop
+  def draw # draw one card from the top of the shuffled deck
+    build_deck if cards.empty?
+    cards.pop
   end
 
   private
 
-  def reset
-    @deck = RANKS.product(SUITS).map do |rank, suit|
-      Card.new(rank, suit)
+  def build_deck # shuffled
+    SUITS.each do |suit|
+      RANKS.each { |rank| cards << Card.new(rank, suit) }
     end
-    @deck.shuffle!
+    cards.shuffle!
   end
 end
 
 class PokerHand
-  attr_reader :my_hand
+  attr_reader :hand
 
   def initialize(deck)
-    @my_hand = []
-    5.times { @my_hand << deck.draw }
+    @hand = []
+    5.times { hand << deck.draw }
   end
 
   def print
-    # my_hand.each { |card| puts card }
-    puts my_hand
+    # hand.each { |card| puts card }
+    puts hand
   end
 
   def evaluate
@@ -77,22 +85,20 @@ class PokerHand
   private
 
   def sort_cards
-    my_hand.sort_by! { |card| card.value }
+    hand.sort_by! { |card| card.value }
     hsh = {}
-    my_hand.each do |card|
+    hand.each do |card|
       if hsh.key?(card.value)
         hsh[card.value] << card
       else
-        # hsh[Card::VALUES.fetch(card.rank, card.rank)] = [card]
         hsh[card.value] = [card]
       end
     end
-    # p hsh
     hsh
   end
 
   def royal_flush?
-    straight_flush? && my_hand[4].rank == 'Ace'
+    straight_flush? && hand[4].rank == 'Ace'
   end
 
   def straight_flush?
@@ -109,21 +115,21 @@ class PokerHand
   end
 
   def flush?
-    # my_hand.all? { |card| card.suit == 'Clubs' } ||
-    #   my_hand.all? { |card| card.suit == 'Diamonds' } ||
-    #   my_hand.all? { |card| card.suit == 'Hearts' } ||
-    #   my_hand.all? { |card| card.suit == 'Spades' }
+    # hand.all? { |card| card.suit == 'Clubs' } ||
+    #   hand.all? { |card| card.suit == 'Diamonds' } ||
+    #   hand.all? { |card| card.suit == 'Hearts' } ||
+    #   hand.all? { |card| card.suit == 'Spades' }
 
-    soot = my_hand.first.suit
+    soot = hand.first.suit
     # Deck::SUITS.any? do |soot|
-      my_hand.all? { |card| card.suit == soot }
+      hand.all? { |card| card.suit == soot }
     # end
   end
 
   def straight?
     sort_cards.all? { |rnk, crds| crds.size == 1 } &&
-      # (my_hand[4].value - my_hand[0].value == 4)
-      (my_hand.max.value - my_hand.min.value == 4)
+      # (hand[4].value - hand[0].value == 4)
+      (hand.max.value - hand.min.value == 4)
   end
 
   def three_of_a_kind?

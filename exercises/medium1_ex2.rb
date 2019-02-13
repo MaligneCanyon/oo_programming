@@ -1,33 +1,35 @@
 class FixedArray
-  attr_accessor :arr
+  attr_reader :size, :arr
 
   def initialize(size)
-    @arr = Array.new(size)
+    @size = size
+    @arr = Array.new(size, nil)
   end
 
-  def [](ndx)
-    if ndx > (arr.size - 1) || ndx < -arr.size # ndx >= 6 or ndx < -5
-      raise IndexError
-    else
+  def [] (ndx)
+    ndx = size + ndx if ndx < 0
+    if (0...size).include?(ndx)
       arr[ndx]
+    else
+      raise IndexError
     end
-  end
-
-  def to_s
-    arr.to_s
-  end
-
-  def to_a
-    # should use arr.clone instead (see solution)
-    arr.to_a
   end
 
   def []=(ndx, value)
-    if ndx > (arr.size - 1) || ndx < -arr.size # ndx >= 6 or ndx < -5
-      raise IndexError
-    else
+    ndx = size + ndx if ndx < 0
+    if (0...size).include?(ndx)
       arr[ndx] = value
+    else
+      raise IndexError
     end
+  end
+
+  def to_a
+    arr.clone
+  end
+
+  def to_s
+    arr.inspect
   end
 end
 

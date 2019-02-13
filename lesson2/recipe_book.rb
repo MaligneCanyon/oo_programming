@@ -62,3 +62,4 @@ p recipe1.display_ingredients
 p recipe1.convert_measure('sugar', 3)
 p recipe1.display_ingredients
 p recipe_book.get_recipe(recipe1)
+p recipe_book

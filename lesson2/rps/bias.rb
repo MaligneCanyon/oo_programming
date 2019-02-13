@@ -24,11 +24,11 @@
 #   previously won for the choice
 #   - ex. if r=2% p=6% s=5% l=4% S=1%
 #         sample_arr = [
-#           ['rock', 'rock'],
-#           ['paper', 'paper', 'paper', 'paper', 'paper', 'paper'],
-#           ['scissors', 'scissors', 'scissors', 'scissors', 'scissors'],
-#           ['lizard', 'lizard', 'lizard', 'lizard'],
-#           ['Spock']
+#           ['rock']     * 2,
+#           ['paper']    * 6,
+#           ['scissors'] * 5,
+#           ['lizard']   * 4,
+#           ['Spock']    * 1
 #         ].flatten
 # struct:
 # - arr
@@ -46,7 +46,7 @@
 
 def bias(arr)
   counter_hsh = {'rock'=>0, 'paper'=>0, 'scissors'=>0, 'lizard'=>0, 'Spock'=>0}
-  arr.each { |elem| counter_hsh[elem['c']] += 2 if elem['w'] == 'computer' }
+  arr.each { |elem| counter_hsh[elem['c']] += 1 if elem['w'] == 'computer' }
   # sample_arr = []
   # counter_hsh.each do |k, v|
   #   new_arr = Array.new(v) { k }
@@ -57,8 +57,8 @@ def bias(arr)
 end
 
 p bias([
-  {'h' => 'rock', 'c'=>'paper', 'w'=>'computer'},
-  {'h' => 'paper', 'c'=>'rock', 'w'=>'human'},
-  {'h' => 'lizard', 'c'=>'scissors', 'w'=>'computer'},
-  {'h' => 'rock', 'c'=>'paper', 'w'=>'computer'},
+  {'h' => 'rock', 'c'=>'paper', 'w'=>'computer'}, # adds 'paper'
+  {'h' => 'paper', 'c'=>'rock', 'w'=>'human'}, # adds nothing (computer lost)
+  {'h' => 'lizard', 'c'=>'scissors', 'w'=>'computer'}, # adds 'scissors'
+  {'h' => 'rock', 'c'=>'paper', 'w'=>'computer'}, # adds 'paper'
 ])

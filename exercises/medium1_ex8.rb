@@ -1,13 +1,6 @@
 class Card
   include Comparable
 
-  CARD_VALUES = {
-    'Ace'   => 14,
-    'King'  => 13,
-    'Queen' => 12,
-    'Jack'  => 11
-  }
-
   attr_reader :rank, :suit
 
   def initialize(rank, suit)
@@ -15,12 +8,39 @@ class Card
     @suit = suit
   end
 
-  def values
+  # RANK = {
+  #   'Ace' => 13,
+  #   'King' => 13,
+  #   'Queen' => 12,
+  #   'Jack' => 11,
+  #   10 => 10,
+  #   9 => 9,
+  #   8 => 8,
+  #   7 => 7,
+  #   6 => 6,
+  #   5 => 5,
+  #   4 => 4,
+  #   3 => 3,
+  #   2 => 2
+  # }
+
+  # def <=>(other)
+  #   RANK[rank] <=> RANK[other.rank]
+  # end
+
+  CARD_VALUES = {
+    'Ace'   => 14,
+    'King'  => 13,
+    'Queen' => 12,
+    'Jack'  => 11
+  }
+
+  def value
     CARD_VALUES.fetch(rank, rank)
   end
 
   def <=>(other)
-    values <=> other.values
+    value <=> other.value
   end
 
   # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.

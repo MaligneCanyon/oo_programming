@@ -11,14 +11,9 @@ class Machine
     flip_switch(:off) # ditto
   end
 
-  def switch_state
-    switch
-  end
-
   private
 
   attr_writer :switch
-  attr_reader :switch # added to chk the state
 
   def flip_switch(desired_state)
     # "unlike all other private method calls, you must specify the receiver
@@ -29,9 +24,8 @@ end
 
 terminator = Machine.new
 terminator.start
-p terminator.switch_state
-# terminator.switch = :off # this works if attr_writer :switch is public
-# p terminator.switch_state
+p terminator
 terminator.stop
-p terminator.switch_state
-terminator.flip_switch(:on)
+p terminator
+# terminator.switch = :on # NoMethodError
+terminator.flip_switch(:on) # NoMethodError

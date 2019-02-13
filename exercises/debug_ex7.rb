@@ -1,8 +1,3 @@
-# We created a simple BankAccount class with overdraft protection, that does not allow a withdrawal greater
-# than the amount of the current balance. We wrote some example code to test our program. However, we are
-# surprised by what we see when we test its behavior. Why are we seeing this unexpected output? Make changes
-# to the code so that we see the appropriate behavior.
-
 class BankAccount
   attr_reader :balance
 
@@ -37,14 +32,12 @@ class BankAccount
   # end
 
   def withdraw(amount)
-    if amount > 0
-      # if self.balance >= amount
-      if valid_transaction?(balance - amount)
-        self.balance -= amount
-        "$#{amount} withdrawn. Total balance is $#{balance}."
-      else
-        "Invalid. Enter a positive amount less than or equal to current balance ($#{balance})."
-      end
+    # if amount > 0 && balance >= amount
+    if amount > 0 && valid_transaction?(balance - amount)
+      self.balance -= amount
+      "$#{amount} withdrawn. Total balance is $#{balance}."
+    else
+      "Invalid. Enter a positive amount less than or equal to current balance ($#{balance})."
     end
   end
 
@@ -60,7 +53,7 @@ class BankAccount
   # end
 
   def valid_transaction?(new_balance)
-    # new_balance > 0 # shouldn't that be '>=' ?
+    # new_balance > 0 # should be '>='
     new_balance >= 0
   end
 end
@@ -78,5 +71,5 @@ p account.balance         # => 50
 
 p account.withdraw(51)    # => Invalid. Enter positive amount less than or equal to current balance ($50).
 p account.balance         # => 50
-p account.withdraw(50)    # => $50 withdrawn. Total balance is $0.
-p account.balance         # => 0
+p account.withdraw(49)    # => $49 withdrawn. Total balance is $1.
+p account.balance         # => 1

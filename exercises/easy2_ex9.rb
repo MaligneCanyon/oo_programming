@@ -1,16 +1,18 @@
+# could use a module (or a superclass)
 module Walkable
   def walk
     puts "#{name} #{gait} forward"
   end
-end
 
-class Person
-  include Walkable
   attr_reader :name
 
   def initialize(name)
     @name = name
   end
+end
+
+class Person
+  include Walkable
 
   private
 
@@ -21,11 +23,6 @@ end
 
 class Cat
   include Walkable
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-  end
 
   private
 
@@ -36,11 +33,6 @@ end
 
 class Cheetah
   include Walkable
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-  end
 
   private
 

@@ -2,15 +2,16 @@ module Walkable
   def walk
     puts "#{name} #{gait} forward"
   end
-end
 
-class Person
-  include Walkable
   attr_reader :name
 
   def initialize(name)
     @name = name
   end
+end
+
+class Person
+  include Walkable
 
   private
 
@@ -41,11 +42,6 @@ end
 
 class Cat
   include Walkable
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-  end
 
   private
 
@@ -56,11 +52,6 @@ end
 
 class Cheetah
   include Walkable
-  attr_reader :name
-
-  def initialize(name)
-    @name = name
-  end
 
   private
 
@@ -73,8 +64,16 @@ mike = Person.new("Mike")
 mike.walk
 # => "Mike strolls forward"
 
+kitty = Cat.new("Kitty")
+kitty.walk
+# => "Kitty saunters forward"
+
+flash = Cheetah.new("Flash")
+flash.walk
+# => "Flash runs forward"
+
 byron = Noble.new("Byron", "Lord")
-byron.walk # note: this does not use 'p byron.walk' ... why change the implementation here ???
+byron.walk # note: this does not use 'p byron.walk'
 # => "Lord Byron struts forward"
 
 p byron.name

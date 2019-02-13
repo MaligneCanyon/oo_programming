@@ -1,4 +1,4 @@
-require 'pry'
+# SOME IMPROVEMENTS - si#
 
 class Board # reps state of the board
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows

@@ -5,18 +5,18 @@ class Pet
     @species = species
     @name = name
   end
+
+  def to_s
+    "a #{species} named #{name}"
+  end
 end
 
-# could either use an instance var to count the num of pets an owner has adopted,
-# or have an arr of pets for each owner (which could be handy later).
 class Owner
   attr_reader :name
-  # attr_accessor :number_of_pets
   attr_reader :pets
 
   def initialize(name)
     @name = name
-    # @number_of_pets = 0
     @pets = []
   end
 
@@ -26,46 +26,40 @@ class Owner
 end
 
 class Shelter
-  # @@adoptions = {} # better to use an instance var (could have > 1 shelter)
   def initialize
-    @adoptions = {}
+    @adoptions = []
   end
 
-  # adopt method
-  # inputs:
-  # - obj x2
-  # outputs:
-  # - none
-  # reqs:
-  # - save an adoption to a hsh {owner:[pets]}
-  #   - hsh has owner name as a key, w/ an arr of pets for the value
-  # rules:
-  # - none
-  # struct:
-  # - arr
-  # algo:
-  # - if the owner.name key exists
-  #   - copy the pet obj to the value arr
-  # - else
-  #   - create a key:value pair
-
-  # could use an Adoptions class ...
   def adopt(owner, pet)
-    if @adoptions.key?(owner.name)
-      @adoptions[owner.name] << pet
-    else
-      @adoptions[owner.name] = [pet]
-    end
-    # owner.number_of_pets += 1
     owner.pets << pet
+    @adoptions << Adoption.new(owner.name, pet)
   end
 
   def print_adoptions
-    @adoptions.each do |person, animals|
+    adoptions_by_owner = {}
+    @adoptions.each do |adoption|
+      if adoptions_by_owner.key?(adoption.owner_name)
+        adoptions_by_owner[adoption.owner_name] << adoption.pet
+      else
+        adoptions_by_owner[adoption.owner_name] = [adoption.pet]
+      end
+    end
+
+    adoptions_by_owner.each do |person, pets|
       puts "#{person} has adopted the following pets:"
-      animals.each { |animal| puts "a #{animal.species} named #{animal.name}" }
+      pets.each { |pet| puts pet }
       puts
     end
+  end
+end
+
+class Adoption
+  attr_reader :owner_name, :pet
+
+  def initialize(owner_name, pet)
+    @owner_name = owner_name
+    @pet = pet
+    @date = Time.now
   end
 end
 

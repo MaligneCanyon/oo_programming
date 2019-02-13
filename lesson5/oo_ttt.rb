@@ -1,4 +1,4 @@
-require 'pry'
+# INITIAL VERSION
 
 class Board # reps state of the board
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
@@ -41,8 +41,6 @@ class Board # reps state of the board
 
   def detect_winner # rtn the winning marker or nil
     WINNING_LINES.each do |line|
-      # binding.pry
-
       # if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
       #   @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
       #   @squares[line[2]].marker == TTTGame::HUMAN_MARKER
@@ -58,7 +56,6 @@ class Board # reps state of the board
     nil
   end
 
-
   # def winning_marker_count?(line, mark)
   #   # @squares.values_at(*line) is an arr of Square objs
   #   # @squares.values_at(*line).map(&:marker) is an arr of markers
@@ -66,8 +63,6 @@ class Board # reps state of the board
   # end
   # def detect_winner # rtn the winning marker or nil
   #   WINNING_LINES.each do |line|
-  #     # binding.pry
-
   #     # if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
   #     #   @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
   #     #   @squares[line[2]].marker == TTTGame::HUMAN_MARKER

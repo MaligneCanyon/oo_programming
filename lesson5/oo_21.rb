@@ -1,11 +1,6 @@
-# In the reference implementation, we use a Hand module that is mixed into
-# Player and Dealer.
-
 # Let the Deck class do the dealing (it's actually irrelevant who deals, other
 # than the ordering of who goes first).  That way, both Player and Dealer are
 # both generic.
-
-# require 'pry'
 
 class Participant
   # what goes in here? all the redundant behaviors from Player and Dealer?
@@ -18,7 +13,7 @@ class Participant
     @name = ''
     @cards = [] # an arr of Card objs
     @total = nil
-    # @deck = deck # a CO ***
+    # @deck = deck # a CO
   end
 
   def busted?
@@ -33,7 +28,6 @@ class Participant
 
   def totalize(cards)
     # definitely looks like we need to know about "cards" to produce some total
-    # binding.pry
     ttl = 0
     cards.each { |card| ttl += card.value }
     cards.each do |card|
@@ -52,7 +46,7 @@ class Player < Participant
       break unless choice == ''
     end
     self.name = choice
-    # self.name = "Bob" # *** force
+    # self.name = "Bob" # *** force for testing
   end
 
   def player_choice
@@ -110,8 +104,8 @@ class Dealer < Participant
 end
 
 class Deck
-  DEALER_BREAK_POINT = 17 # usually 17
-  MAX_BREAK_POINT    = 21 # usually 21
+  DEALER_BREAK_POINT = 27 # usually 17
+  MAX_BREAK_POINT    = 31 # usually 21
 
   attr_reader :suits, :player, :dealer
   attr_accessor :shuffled_cards
@@ -135,8 +129,11 @@ class Deck
     self.shuffled_cards = suits.map(&:suited_cards).flatten.shuffle
     # puts shuffled_cards
     # puts shuffled_cards.size # should be 52
-    player.cards = shuffled_cards.pop(2)
-    dealer.cards = shuffled_cards.pop(2)
+
+    # player.cards = shuffled_cards.pop(2)
+    # dealer.cards = shuffled_cards.pop(2)
+    player.cards = shuffled_cards.pop(MAX_BREAK_POINT / 10) # usually 2 cards
+    dealer.cards = shuffled_cards.pop(MAX_BREAK_POINT / 10)
   end
 end
 
@@ -168,7 +165,7 @@ class Card
   end
 end
 
-class Score # this class would be more useful if we kept score
+class Score # this class would be more useful if we actually kept score
   RESULT = ["Dealer", "It's a tie", "Player"]
 
   attr_accessor :result
@@ -187,6 +184,7 @@ class Score # this class would be more useful if we kept score
     else
       puts "#{result} !"
     end
+    puts
   end
 end
 
