@@ -16,6 +16,8 @@ class MyClass
 end
 
 bob = MyClass.new
-# bob.name = 'Bob' # @name does not exist unless the setter is called
-p bob
-bob.print_name
+p bob # => #<MyClass:0x0000000002122378>
+bob.print_name # => nil
+bob.name = 'Bob' # @name does not exist unless the setter is called
+p bob # => #<MyClass:0x0000000002122378 @name="Bob">
+bob.print_name # => "Bob"

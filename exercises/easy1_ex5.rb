@@ -33,6 +33,9 @@ person.first_name = 'jane'#.capitalize
 person.last_name = 'smith'#.capitalize
 puts person
 
+# it may be better to use the attr_writer methods and move the capitalization
+# out of initialize and into to_s
+
 # Expected output:
 # John Doe
 # Jane Smith

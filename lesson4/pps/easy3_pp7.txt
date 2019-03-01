@@ -1,6 +1,6 @@
-- the attr_* methods are not utilized
-- the instance vars are not utilized in Light#information
-- the 'return' keyword in Light#information is superfulous
+- the attr_* instance methods are not utilized
+- the instance vars are not utilized in Light::information
+- the 'return' keyword in Light::information is superfulous
 
 class Light
   attr_accessor :brightness, :color

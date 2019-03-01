@@ -18,9 +18,7 @@ class Vehicle
   # no initialize method here, so look in the Moveable module
 end
 
-class WheeledVehicle
-  include Moveable
-
+class WheeledVehicle < Vehicle
   def initialize(tire_array, km_traveled_per_liter, liters_of_fuel_capacity)
     @tires = tire_array
     super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
@@ -50,12 +48,14 @@ class Motorcycle < WheeledVehicle
 end
 
 class Boat < Vehicle
-  attr_reader :propeller_count, :hull_count
-
   def initialize(num_propellers=1, num_hulls=1, km_traveled_per_liter, liters_of_fuel_capacity)
     @props = num_propellers
     @hulls = num_hulls
     super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
+  end
+
+  def range # override the Moveable#range method
+    super + 10 # adds 10 to the rtn value of Moveable#range
   end
 end
 

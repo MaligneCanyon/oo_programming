@@ -25,6 +25,7 @@ person1.name = 'John Doe'
 puts person1.name
 puts person1.first_name # 'John'
 p person1.missing_name # nil # instance var @name was never created
+p person1
 
 # Expected output:
 # John Doe

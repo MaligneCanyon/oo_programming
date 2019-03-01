@@ -32,6 +32,6 @@ puts entry.quantity # 10
 
 # we have altered the public interface, allowing @quantity to be modified
 # directly; circumnavigates the update_quantity method; potentially dangerous
-entry.quantity = 7
+entry.quantity = -7
 p entry
-puts entry.quantity # 7
+puts entry.quantity # -7 # oops

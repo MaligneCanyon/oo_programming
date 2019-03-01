@@ -1,6 +1,6 @@
 class Cat
   # can def COLOR inside or outside 'Cat'; inside provides better namespacing
-  COLOUR = %w(orange blue purple calLico)
+  COLOUR = %w(orange blue purple calico)
 
   def initialize(name)
     @name = name

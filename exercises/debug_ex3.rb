@@ -12,8 +12,6 @@ class Person
 end
 
 class GeoLocation
-
-
   attr_reader :latitude, :longitude
 
   def initialize(latitude, longitude)

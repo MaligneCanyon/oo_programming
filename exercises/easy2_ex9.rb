@@ -1,4 +1,6 @@
 # could use a module (or a superclass)
+# could also use a (str) constant GAIT in each of the classes and move the
+# gait method to the module (or superclass)
 module Walkable
   def walk
     puts "#{name} #{gait} forward"

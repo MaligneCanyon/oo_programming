@@ -11,6 +11,5 @@ class Cat
 end
 
 kitty = Cat.new('Sophie')
-puts kitty # works if to_s is redefined
-
 puts "I'm #{kitty.name}!" # this works too, w/ or w/o redefining to_s
+puts kitty # works if to_s is redefined; reads better

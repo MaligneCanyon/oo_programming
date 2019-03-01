@@ -14,8 +14,10 @@ end
 
 class SecurityLogger
   def create_log_entry
+    puts "creating log entry"
     # ... implementation omitted ...
   end
 end
 
-secret_file = SecretFile.new(top_secret_data, SecurityLogger.new)
+sf = SecretFile.new("abbrakadabbra", SecurityLogger.new)
+sf.data

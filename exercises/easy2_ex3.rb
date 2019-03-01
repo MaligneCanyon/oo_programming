@@ -6,6 +6,7 @@ class House
     @price = price
   end
 
+  # protected  # <= this works, but is not req'd
   def <=>(other) # ... and re-def the <=> method
     price <=> other.price
   end

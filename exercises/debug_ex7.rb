@@ -73,3 +73,5 @@ p account.withdraw(51)    # => Invalid. Enter positive amount less than or equal
 p account.balance         # => 50
 p account.withdraw(49)    # => $49 withdrawn. Total balance is $1.
 p account.balance         # => 1
+p account.withdraw(-5)    # => Invalid. Enter positive amount less than or equal to current balance ($1).
+p account.balance         # => 1

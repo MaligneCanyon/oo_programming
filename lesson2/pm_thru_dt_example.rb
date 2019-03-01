@@ -3,9 +3,8 @@
 class Wedding # main_class
   attr_reader :guests, :flowers, :songs
 
-   # w/i the main_class def a general (wrapper) method and pass it an instance
-   # of each of the classes for which you want to have implementation-specific
-   # behavior
+  # w/i the main class call a general (wrapper) method and (if needed) pass
+  # it an instance of the main class
   def prepare(preparers)
     preparers.each do |preparer|
       # call a general (wrapper) method and pass it an obj
@@ -15,8 +14,9 @@ class Wedding # main_class
 end
 
 class Chef
-  # def the wrapper method for each of the classes, and have it call an
-  # implementation-specific method (that models behavior specific to the class)
+  # def the wrapper method in each of the associated classes, and have it ca1l
+  # an implementation-specific method (that models behavior specific to that
+  # associated class)
   def prepare_wedding(wedding)
     prepare_food(wedding.guests)
   end

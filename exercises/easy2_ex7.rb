@@ -1,22 +1,29 @@
-class Pet
-  attr_reader :species, :name
+class Shelter
+  def initialize
+    @adoptions = {}
+  end
 
-  def initialize(species, name)
-    @species = species
-    @name = name
+  def adopt(owner, pet)
+    owner.pets << pet
+    @adoptions[owner.name] = owner.pets
+  end
+
+  def print_adoptions
+    @adoptions.each do |person, pets|
+      puts "#{person} has adopted the following pets:"
+      pets.each { |pet| puts pet } # calls the Pet#to_s method
+      puts
+    end
   end
 end
 
-# could either use an instance var to count the num of pets an owner has adopted,
-# or have an arr of pets for each owner (which could be handy later).
+# could either use an instance var to count the num of pets an owner has
+# adopted, or have an arr of pets for each owner (which could be handy later).
 class Owner
-  attr_reader :name
-  # attr_accessor :number_of_pets
-  attr_reader :pets
+  attr_reader :name, :pets
 
   def initialize(name)
     @name = name
-    # @number_of_pets = 0
     @pets = []
   end
 
@@ -25,47 +32,14 @@ class Owner
   end
 end
 
-class Shelter
-  # @@adoptions = {} # better to use an instance var (could have > 1 shelter)
-  def initialize
-    @adoptions = {}
+class Pet
+  def initialize(species, name)
+    @species = species
+    @name = name
   end
 
-  # adopt method
-  # inputs:
-  # - obj x2
-  # outputs:
-  # - none
-  # reqs:
-  # - save an adoption to a hsh {owner:[pets]}
-  #   - hsh has owner name as a key, w/ an arr of pets for the value
-  # rules:
-  # - none
-  # struct:
-  # - arr
-  # algo:
-  # - if the owner.name key exists
-  #   - copy the pet obj to the value arr
-  # - else
-  #   - create a key:value pair
-
-  # could use an Adoptions class ...
-  def adopt(owner, pet)
-    if @adoptions.key?(owner.name)
-      @adoptions[owner.name] << pet
-    else
-      @adoptions[owner.name] = [pet]
-    end
-    # owner.number_of_pets += 1
-    owner.pets << pet
-  end
-
-  def print_adoptions
-    @adoptions.each do |person, animals|
-      puts "#{person} has adopted the following pets:"
-      animals.each { |animal| puts "a #{animal.species} named #{animal.name}" }
-      puts
-    end
+  def to_s
+    "a #{@species} named #{@name}"
   end
 end
 
@@ -91,6 +65,7 @@ shelter.adopt(bholmes, chester)
 shelter.print_adoptions
 puts "#{phanson.name} has #{phanson.number_of_pets} adopted pets."
 puts "#{bholmes.name} has #{bholmes.number_of_pets} adopted pets."
+
 
 # P Hanson has adopted the following pets:
 # a cat named Butterscotch

@@ -16,4 +16,4 @@ p cat.house
 
 # p Feline.home # NoMethodError # superclass can't access subclass class methods ?
 feline = Feline.new
-p feline.house # NoMethodError # superclass can't access subclass instance methods ?
+p feline.house # NoMethodError # superclass instance can't access subclass instance methods ?

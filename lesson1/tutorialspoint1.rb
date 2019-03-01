@@ -7,6 +7,7 @@ class Box
   end
 
   def bigger_box(other) # there's nothing special about the term 'other'
+    # you can instantiate another class instance from w/i the class
     Box.new(@width + other.width, @height + other.height)
   end
 

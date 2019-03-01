@@ -1,10 +1,10 @@
 module Conversion
   def convert_temp(temp, units)
-    temp *= (units == 'F'.upcase ? 2.0 : 0.5)
+    temp *= (units.upcase == 'F' ? 2.0 : 0.5)
   end
 
   def convert_measure(ingred, factor)
-    ingred * factor
+    ingred *  factor
   end
 end
 

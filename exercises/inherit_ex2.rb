@@ -3,6 +3,9 @@ class Vehicle
 
   def initialize(year)
     @year = year
+    # the following would work too (but would effect any derived class, not
+    # just Truck)
+    # self.start_engine
   end
 end
 

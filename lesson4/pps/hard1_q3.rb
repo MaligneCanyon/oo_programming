@@ -11,15 +11,17 @@ module Moveable
   end
 end
 
+# the Moveable module contains all common behaviours, and Vehicle adds nothing
+# else, so don't really need the Vehicle superclass
 class Vehicle
   include Moveable
+  # no initialize method here, so look in the Moveable module
 end
 
 class WheeledVehicle < Vehicle
-
   def initialize(tire_array, km_traveled_per_liter, liters_of_fuel_capacity)
     @tires = tire_array
-    super(km_traveled_per_liter, liters_of_fuel_capacity)
+    super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
   end
 
   def tire_pressure(tire_index)
@@ -45,20 +47,26 @@ class Motorcycle < WheeledVehicle
   end
 end
 
-class Catamaran < Vehicle
-  attr_reader :propeller_count, :hull_count
-
-  def initialize(num_propellers, num_hulls, km_traveled_per_liter, liters_of_fuel_capacity)
+class Boat < Vehicle
+  def initialize(num_propellers=1, num_hulls=1, km_traveled_per_liter, liters_of_fuel_capacity)
     @props = num_propellers
     @hulls = num_hulls
-    super(km_traveled_per_liter, liters_of_fuel_capacity)
+    super(km_traveled_per_liter, liters_of_fuel_capacity) # look for the initialize method in Vehicle
   end
+end
+
+class Catamaran < Boat
+end
+
+class Motorboat < Boat
 end
 
 p car = Auto.new
 p bike = Motorcycle.new
-p boat = Catamaran.new(2,2,10.0,100.0)
+p boat1 = Catamaran.new(2,2,10.0,100.0)
+p boat2 = Motorboat.new(7.0,50.0)
 
 p car.range
 p bike.range
-p boat.range
+p boat1.range
+p boat2.range

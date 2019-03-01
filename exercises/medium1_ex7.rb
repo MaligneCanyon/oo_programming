@@ -2,13 +2,13 @@ class GuessingGame
   attr_accessor :guess
 
   def initialize(min, max)
-    @range = (min..max).to_a
-    @num = range.sample
+    @arr = (min..max).to_a
+    @num = arr.sample
     @guess = nil
   end
 
   def play
-    (Math.log2(range.size).to_i + 1).downto(1) do |x|
+    (Math.log2(arr.size).to_i + 1).downto(1) do |x|
       display_remaining(x)
       get_guess
       display_result
@@ -19,15 +19,15 @@ class GuessingGame
 
   def get_guess
     loop do
-      print "Enter a number between #{range[0]} and #{range[-1]}: "
+      print "Enter a number between #{arr.first} and #{arr.last}: "
       self.guess = gets.to_i
-      break if range.include?(guess)
+      break if arr.include?(guess)
       print "Invalid guess. "
     end
   end
 
   private
-  attr_reader :num, :range
+  attr_reader :num, :arr
 
   def display_remaining(x)
     puts "You have #{x} guess#{x > 1 ? "es " : " "}remaining."

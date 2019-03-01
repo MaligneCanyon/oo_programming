@@ -5,6 +5,8 @@ class KrispyKreme
   end
 
   def to_s
+    # str = @filling_type ? "Plain" : @filling_type
+    # str += @glazing ? " with #{@glazing}" : ""
     "#{@filling_type ? @filling_type : 'Plain'}" + (@glazing ? " with #{@glazing}" : "")
   end
 end

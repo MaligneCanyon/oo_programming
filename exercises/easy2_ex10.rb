@@ -20,7 +20,9 @@ class Person
   end
 end
 
-class Noble < Person
+class Noble
+  include Walkable
+
   attr_reader :title
 
   def initialize(name, title)

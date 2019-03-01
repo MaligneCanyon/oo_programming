@@ -1,6 +1,8 @@
 class Cat
   def self.generic_greeting
-    puts "Hello! I'm a cat!"
+    # puts "Hello! I'm a cat!"
+    # puts "Hello! I'm a #{self}!" # 'Cat' is capitalized
+    puts "Hello! I'm a #{self.name.downcase}!"
   end
 end
 

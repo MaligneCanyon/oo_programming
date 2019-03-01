@@ -19,11 +19,15 @@ class Card
     CARD_VALUES.fetch(rank, rank)
   end
 
+  protected
+
   def <=>(other)
     value <=> other.value
   end
 
-  # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
+  private
+
+  # rtn a str rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
   def to_s
     "#{rank} of #{suit}"
   end
@@ -60,14 +64,17 @@ class PokerHand
   def initialize(deck)
     @hand = []
     5.times { hand << deck.draw }
+    @card_counts = []
   end
 
   def print
     # hand.each { |card| puts card }
-    puts hand
+    puts hand # puts calls puts on each of the card_counts elems
   end
 
   def evaluate
+    sort_cards
+
     case
     when royal_flush?     then 'Royal flush'
     when straight_flush?  then 'Straight flush'
@@ -84,21 +91,28 @@ class PokerHand
 
   private
 
+  attr_accessor :card_counts
+
   def sort_cards
     hand.sort_by! { |card| card.value }
     hsh = {}
-    hand.each do |card|
+    hand.each do |card| # count the num of cards having the same value
       if hsh.key?(card.value)
-        hsh[card.value] << card
+        hsh[card.value] += 1
       else
-        hsh[card.value] = [card]
+        hsh[card.value] = 1
       end
     end
-    hsh
+    # card_counts is an arr where the elems are the num of cards having the
+    # same particular value
+    # ex. [1, 2, 2]    # two pair
+    #     [1, 3, 1]    # three of a kind
+    #     [1, 1, 2, 1] # one pair
+    self.card_counts = hsh.values
   end
 
   def royal_flush?
-    straight_flush? && hand[4].rank == 'Ace'
+    straight_flush? && hand.max.rank == 'Ace'
   end
 
   def straight_flush?
@@ -106,12 +120,12 @@ class PokerHand
   end
 
   def four_of_a_kind?
-    sort_cards.any? { |rnk, crds| crds.size == 4 }
+    card_counts.any? { |elem| elem == 4 }
   end
 
   def full_house?
-    sort_cards.any? { |rnk, crds| crds.size == 3 } &&
-      sort_cards.any? { |rnk, crds| crds.size == 2 }
+    card_counts.any? { |elem| elem == 3 } &&
+      card_counts.any? { |elem| elem == 2 }
   end
 
   def flush?
@@ -127,22 +141,22 @@ class PokerHand
   end
 
   def straight?
-    sort_cards.all? { |rnk, crds| crds.size == 1 } &&
+    card_counts.all? { |elem| elem == 1 } &&
       # (hand[4].value - hand[0].value == 4)
       (hand.max.value - hand.min.value == 4)
   end
 
   def three_of_a_kind?
-    sort_cards.any? { |rnk, crds| crds.size == 3 } &&
-      sort_cards.none? { |rnk, crds| crds.size == 2 }
+    card_counts.any? { |elem| elem == 3 } &&
+      card_counts.none? { |elem| elem == 2 }
   end
 
   def two_pair?
-    sort_cards.count { |rnk, crds| crds.size == 2 } == 2
+    card_counts.count { |elem| elem == 2 } == 2
   end
 
   def pair?
-    sort_cards.count { |rnk, crds| crds.size == 2 } == 1
+    card_counts.count { |elem| elem == 2 } == 1
   end
 end
 
@@ -173,8 +187,9 @@ def poker_test
       end
     end
   end
+  puts
 end
-# poker_test
+poker_test
 
 
 # Testing your class:

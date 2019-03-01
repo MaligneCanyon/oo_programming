@@ -1,3 +1,39 @@
+class Card
+  include Comparable
+
+  attr_reader :rank, :suit
+
+  def initialize(rank, suit)
+    @rank = rank
+    @suit = suit
+  end
+
+  CARD_VALUES = {
+    'Ace'   => 14,
+    'King'  => 13,
+    'Queen' => 12,
+    'Jack'  => 11
+  }
+
+  protected
+
+  def value
+    CARD_VALUES.fetch(rank, rank)
+  end
+
+  def <=>(other)
+    value <=> other.value
+  end
+
+  private
+
+  # rtn a str rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
+  def to_s
+    "#{rank} of #{suit}"
+  end
+end
+
+
 class Deck
   RANKS = ((2..10).to_a + %w(Jack Queen King Ace)).freeze
   # SUITS = %w(Hearts Clubs Diamonds Spades).freeze # wrong order !
@@ -31,37 +67,6 @@ class Deck
     end
     # could use cards.shuffle! here, then use cards.pop in #draw
     # (perhaps better than pulling a card from the middle of the deck)
-  end
-end
-
-class Card
-  include Comparable
-
-  CARD_VALUES = {
-    'Ace'   => 14,
-    'King'  => 13,
-    'Queen' => 12,
-    'Jack'  => 11
-  }.freeze
-
-  attr_reader :rank, :suit
-
-  def initialize(rank, suit)
-    @rank = rank
-    @suit = suit
-  end
-
-  def value
-    CARD_VALUES.fetch(rank, rank)
-  end
-
-  def <=>(other)
-    value <=> other.value
-  end
-
-  # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
-  def to_s
-    "#{rank} of #{suit}"
   end
 end
 

@@ -1,35 +1,25 @@
 class FixedArray
-  attr_reader :size, :arr
-
   def initialize(size)
     @size = size
     @arr = Array.new(size, nil)
   end
 
   def [] (ndx)
-    ndx = size + ndx if ndx < 0
-    if (0...size).include?(ndx)
-      arr[ndx]
-    else
-      raise IndexError
-    end
+    raise IndexError if ndx >= @size || ndx < -@size
+    @arr[ndx]
   end
 
   def []=(ndx, value)
-    ndx = size + ndx if ndx < 0
-    if (0...size).include?(ndx)
-      arr[ndx] = value
-    else
-      raise IndexError
-    end
+    raise IndexError if ndx >= @size || ndx < -@size
+    @arr[ndx] = value
   end
 
   def to_a
-    arr.clone
+    @arr.clone
   end
 
   def to_s
-    arr.inspect
+    @arr.inspect
   end
 end
 
@@ -52,7 +42,7 @@ puts fixed_array.to_a == [nil, 'c', nil, 'a', nil]
 fixed_array[4] = 'd'
 puts fixed_array[4] == 'd'
 puts fixed_array.to_a == [nil, 'c', nil, 'a', 'd']
-puts fixed_array.to_s == '[nil, "c", nil, "a", "d"]' # to_s must rtn a str
+puts fixed_array.to_s == '[nil, "c", nil, "a", "d"]'
 
 puts fixed_array[-1] == 'd'
 puts fixed_array[-4] == 'c'

@@ -1,8 +1,10 @@
 module Weighable
-  # def Weighable.weight # works if called directly outside any class
+  def Weighable.weight # works if called directly outside any class
+    "what's your class weight ?"
+  end
 
   def weight # works if called directly by an instance of a class that includes the module
-    "what's your weight ?"
+    "what's your instance weight ?"
   end
 end
 
@@ -23,7 +25,7 @@ class Person < Animal
   end
 
   def print_age
-    puts "your age is #{get_age}"
+    puts "your age is #{age}"
   end
 
   def instance_chk
@@ -34,6 +36,8 @@ class Person < Animal
 
   private
 
+  attr_reader :age
+
   def self.chk # def'ing a class method as private has no bearing on its use (it's still accessible)
     puts 'entering the class method'
     # there is no way to access bob.name w/i a class method
@@ -41,18 +45,15 @@ class Person < Animal
     # puts type # ???
     puts 'exiting the class method'
   end
-
-  def get_age
-    @age
-  end
 end
 
 
 bob = Person.new('Bob', 42)
-Person.chk
-# bob.get_age
-bob.print_age
-bob.instance_chk
+p bob.weight
+p Weighable::weight # can call directly if weight def'n prefixed w/ module name
+p Weighable.weight # don't need to use ::
 
-# p Weighable::weight # can call directly if weight def'n prefixed w/ module name
-p bob.weight # doesn't work if weight def'n prefixed w/ module name
+Person.chk
+bob.instance_chk
+bob.print_age
+bob.age # NoMethodError (the age getter is private)

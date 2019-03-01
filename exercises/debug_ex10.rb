@@ -11,7 +11,7 @@ class SearchEngine
     unless valid?(api_key)
       raise AuthenticationError, 'API key is invalid.'
     end
-    puts 'hi!'
+
     rand(200_000)
   end
 
@@ -34,11 +34,12 @@ module DoesItRock
       negative = SearchEngine.count(%{"#{term} is not fun"}, API_KEY).to_f
 
       positive / (positive + negative)
+      # 0/0 # *** use to test ZeroDivisionError
     # rescue Exception # rescue1
     rescue ZeroDivisionError
       puts " In rescue1 mode."
       # NoScore # we need to return a class instance here
-      NoScore.new
+      NoScore.new # So, you CAN instantiate an obj from (within) a module ...
     end
   end
 

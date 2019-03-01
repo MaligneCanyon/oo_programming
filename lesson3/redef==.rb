@@ -1,6 +1,6 @@
-# By defining a == method in our Person class, we're overriding the default
+# "By defining a == method in our Person class, we're overriding the default
 # BasicObject#== behavior, and providing a much more meaningful way to compare
-# two Person objects; can override > and < as well.
+# two Person objects"; can override > and < as well.
 
 class Person
   attr_accessor :name

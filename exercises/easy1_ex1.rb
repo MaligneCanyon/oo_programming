@@ -38,12 +38,10 @@ class Banner
 
   def horizontal_rule
     '+' + '-' * (@message.size + 2) + '+'
-    # "+#{'-' * (@message.size + 2)}+"
   end
 
   def empty_line
     '|' + ' ' * (@message.size + 2) + '|'
-    # "|#{' ' * (@message.size + 2)}|"
   end
 
   def message_line

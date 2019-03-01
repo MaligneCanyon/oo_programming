@@ -8,8 +8,8 @@ class Card
     @suit = suit
   end
 
-  # RANK = {
-  #   'Ace' => 13,
+  # CARD_VALUES = {
+  #   'Ace' => 14,
   #   'King' => 13,
   #   'Queen' => 12,
   #   'Jack' => 11,
@@ -25,7 +25,7 @@ class Card
   # }
 
   # def <=>(other)
-  #   RANK[rank] <=> RANK[other.rank]
+  #   CARD_VALUES[rank] <=> CARD_VALUES[other.rank]
   # end
 
   CARD_VALUES = {
@@ -35,6 +35,8 @@ class Card
     'Jack'  => 11
   }
 
+  protected
+
   def value
     CARD_VALUES.fetch(rank, rank)
   end
@@ -43,7 +45,9 @@ class Card
     value <=> other.value
   end
 
-  # rtn a String rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
+  private
+
+  # rtn a str rep of the card, ex. "Jack of Diamonds", "4 of Clubs", etc.
   def to_s
     "#{rank} of #{suit}"
   end

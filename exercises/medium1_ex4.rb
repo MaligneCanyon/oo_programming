@@ -2,112 +2,80 @@ class CircularQueue
   attr_accessor :arr, :newest, :oldest
 
   def initialize(size)
-    @arr = Array.new(size)
+    @arr = Array.new(size, nil)
     @oldest = nil
     @newest = nil
   end
 
-  def enqueue(obj)
+  def enqueue(value)
     if newest # there's something other than nil in the arr
-      self.newest += 1
-      self.newest = 0 if newest == arr.size # rollover
-      if newest == oldest # we are replacing the oldest elem
-        self.oldest += 1
-        self.oldest = 0 if oldest == arr.size # rollover
-      end
+      self.newest = incr(newest)
+      self.oldest = incr(oldest) if newest == oldest  # we are replacing the oldest elem
     else # all arr elems are nil
       self.newest = 0
       self.oldest = 0
     end
-    arr[newest] = obj
+    arr[newest] = value
   end
 
   def dequeue
-    return nil unless oldest # rtn nil if all arr elems are nil
-    obj = arr[oldest] # save the oldest arr elem
+    return nil if arr.none? # rtn nil if all arr elems are nil
+    value = arr[oldest] # save the oldest arr elem
     arr[oldest] = nil # replace the oldest elem w/ nil
-    if oldest == newest # there was only one non-nil elem left
+    if arr.none? # there was only one non-nil elem left
       self.oldest = nil
       self.newest = nil
     else
-      self.oldest += 1
-      self.oldest = 0 if oldest == arr.size # rollover
+      self.oldest = incr(oldest)
     end
-    obj # rtn the (saved) oldest arr elem
+    value # rtn the (saved) oldest arr elem
+  end
+
+  def incr(ndx)
+    ndx += 1
+    ndx = 0 if ndx == arr.size # rollover
+    ndx
   end
 end
 
+
 queue = CircularQueue.new(3)
-# p queue
 puts queue.dequeue == nil
-# p queue
 
 queue.enqueue(1)
-# p queue
 queue.enqueue(2)
-# p queue
 puts queue.dequeue == 1
-# p queue
 
 queue.enqueue(3)
-# p queue
 queue.enqueue(4)
-# p queue
 puts queue.dequeue == 2
-# p queue
 
 queue.enqueue(5)
-# p queue
 queue.enqueue(6)
-# p queue
 queue.enqueue(7)
-# p queue
 puts queue.dequeue == 5
-# p queue
 puts queue.dequeue == 6
-# p queue
 puts queue.dequeue == 7
-# p queue
 puts queue.dequeue == nil
-# p queue
 
-# The above code should display true 15 times. <= 7 times
+queue = CircularQueue.new(4)
+puts queue.dequeue == nil
 
-# alt:
-# class CircularQueue
-#   attr_accessor :new, :old, :arr
-#   attr_reader :size
+queue.enqueue(1)
+queue.enqueue(2)
+puts queue.dequeue == 1
 
-#   def initialize(size)
-#     @size = size
-#     @arr = Array.new(size)
-#     @old = nil
-#     @new = nil
-#   end
+queue.enqueue(3)
+queue.enqueue(4)
+puts queue.dequeue == 2
 
-#   def enqueue(obj)
-#     self.new = increment(new)
-#     arr[new] = obj
-#     # incr old if we are replacing the oldest elem,
-#     # or if we are just starting out
-#     self.old = increment(old) if new == old || old == nil
-#   end
+queue.enqueue(5)
+queue.enqueue(6)
+queue.enqueue(7)
+puts queue.dequeue == 4
+puts queue.dequeue == 5
+puts queue.dequeue == 6
+puts queue.dequeue == 7
+puts queue.dequeue == nil
 
-#   def dequeue
-#     return nil unless old # rtn nil if all arr elems are nil
-#     oldest = arr[old] # save the oldest arr elem
-#     arr[old] = nil # replace the oldest elem w/ nil
-#     self.old = increment(old)
-#     oldest
-#   end
-
-#   def increment(ndx)
-#     if ndx # there's something other than nil in the arr
-#       ndx += 1
-#       ndx = 0 if ndx >= size # rollover
-#     else
-#       ndx = 0
-#     end
-#     ndx
-#   end
-# end
+# The above code should display true 15 times.
