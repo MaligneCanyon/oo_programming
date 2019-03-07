@@ -1,24 +1,34 @@
 class Bird
-  def flies_by_flapping
-    puts "flap, flap, flap"
+  def flying_noise
+    flaps
   end
 
-  def flying_noise
-    flies_by_flapping
+  def flaps
+    "flap, flap, flap"
   end
 end
 
 class Mosquito
-  def buzzes_your_ear
-    puts "buzzzzzz ..."
+  def flying_noise
+    buzzes
   end
 
-  def flying_noise
-    buzzes_your_ear
+  def buzzes
+    "buzzzzzzzzzz ..."
   end
 end
 
-flying_animal = [Bird.new, Mosquito.new]
-flying_animal.each do |animal|
-  animal.flying_noise
+class Pig
+  def flying_noise
+    oinks
+  end
+
+  def oinks
+    "oink, oink, oink"
+  end
+end
+
+animals = [Bird.new, Mosquito.new, Pig.new]
+animals.each do |animal|
+  puts "#{animal.flying_noise}"
 end
