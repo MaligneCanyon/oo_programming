@@ -1,0 +1,31 @@
+each day,
+the franchise opens up
+total sales are init'd to zero
+customers come in and order
+total sales for the day are recorded
+total orders for the day are recorded
+
+customer,
+gives a name
+starts an order
+selects a burger, side, drink
+total is calc'd for the order
+order is placed
+order is saved to customer record
+more than one order ?
+grand total is calc'd for the customer
+
+customer
+-> orders
+-> loyalty pts
+
+
+    The application lets a customer place an order for a meal.
+    A meal always has three meal items: a burger, a side, and drink.
+    For each meal item, the customer must choose an option.
+    The application must compute the total cost of the order.
+
+    Nouns: customer, order, meal item, burger, side, drink
+    Verbs: place, total, choose option
+
+
